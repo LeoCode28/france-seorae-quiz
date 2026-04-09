@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="text-align:center; margin-bottom:18px;">
+  <img src="/static/lfs-logo.png" alt="Lycée Français de Séoul" style="height:80px; margin-bottom:12px;" />
+</div>
+
+<div class="card" style="text-align:center;">
+  <h1>{{ t('welcome_title') }}</h1>
+  <p class="subtitle">{{ t('welcome_subtitle') }}</p>
+
+  <div class="divider">🇫🇷</div>
+
+  <div style="text-align:left; margin-bottom:24px;">
+    <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:14px;">
+      <span style="font-size:1.5rem;">🗺️</span>
+      <div>
+        <strong style="color:var(--bleu);">{{ t('welcome_step1_title') }}</strong>
+        <p style="color:var(--gris); font-size:0.9rem; margin-top:2px;">{{ t('welcome_step1_desc') }}</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:14px;">
+      <span style="font-size:1.5rem;">🔍</span>
+      <div>
+        <strong style="color:var(--bleu);">{{ t('welcome_step2_title') }}</strong>
+        <p style="color:var(--gris); font-size:0.9rem; margin-top:2px;">{{ t('welcome_step2_desc') }}</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:14px;">
+      <span style="font-size:1.5rem;">🔢</span>
+      <div>
+        <strong style="color:var(--bleu);">{{ t('welcome_step3_title') }}</strong>
+        <p style="color:var(--gris); font-size:0.9rem; margin-top:2px;">{{ t('welcome_step3_desc') }}</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:12px;">
+      <span style="font-size:1.5rem;">🏆</span>
+      <div>
+        <strong style="color:var(--bleu);">{{ t('welcome_step4_title') }}</strong>
+        <p style="color:var(--gris); font-size:0.9rem; margin-top:2px;">{{ t('welcome_step4_desc') }}</p>
+      </div>
+    </div>
+  </div>
+
+  <a href="/carte" class="btn btn-primary" style="font-size:1.05rem;">{{ t('welcome_start') }}</a>
+</div>
+
+<div style="text-align:center; margin-top:18px; color:var(--gris); font-size:0.81rem;">
+  {{ t('welcome_footer') }}
+</div>
+{% endblock %}

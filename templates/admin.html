@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin – France Seorae Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #F8FAFC; color: #1a1a2e; }
+
+    header {
+      background: #1e293b; color: white;
+      padding: 16px 32px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    }
+    header h1 { font-size: 1.2rem; }
+    .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .nav-links a {
+      color: rgba(255,255,255,0.75); text-decoration: none;
+      font-size: 0.85rem; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .nav-links a:hover { background: rgba(255,255,255,0.1); }
+    .nav-links a.active { background: #002395; border-color: #002395; color: white; }
+
+    main { max-width: 1100px; margin: 32px auto; padding: 0 20px; }
+
+    /* ── Grille de stats ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: white; border-radius: 14px; padding: 20px 22px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      border-left: 4px solid #002395;
+    }
+    .stat-card .num  { font-size: 2rem; font-weight: 700; color: #002395; }
+    .stat-card .lbl  { font-size: 0.82rem; color: #6B7280; margin-top: 3px; }
+    .stat-card .sub  { font-size: 0.75rem; color: #9CA3AF; margin-top: 2px; }
+
+    /* ── Barre d'actions ── */
+    .actions-bar {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 22px;
+    }
+    .action-btn {
+      display: inline-block; padding: 10px 20px;
+      border-radius: 10px; text-decoration: none;
+      font-weight: 600; font-size: 0.88rem;
+      transition: opacity 0.15s;
+    }
+    .action-btn:hover { opacity: 0.85; }
+    .btn-bleu   { background: #002395; color: white; }
+    .btn-vert   { background: #065F46; color: white; }
+    .btn-violet { background: #4F46E5; color: white; }
+    .btn-gris   { background: #6B7280; color: white; }
+    .btn-export { background: #0F172A; color: white; }
+
+    /* ── Table participants ── */
+    table { width: 100%; border-collapse: collapse; background: white;
+            border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    thead { background: #002395; color: white; }
+    th { padding: 14px 16px; text-align: left; font-size: 0.85rem; font-weight: 600; }
+    td { padding: 13px 16px; border-bottom: 1px solid #F1F5F9; font-size: 0.9rem; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #F8FAFC; }
+
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+    .badge-or  { background: #FEF3C7; color: #92400E; }
+    .badge-ok  { background: #D1FAE5; color: #065F46; }
+    .badge-non { background: #F1F5F9; color: #6B7280; }
+
+    .section-title { font-size: 1.1rem; font-weight: 700; color: #1e293b; margin-bottom: 14px; }
+
+    @media(max-width:700px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      table { font-size: 0.8rem; }
+      th:nth-child(4), td:nth-child(4) { display: none; }
+    }
+    @media(max-width:440px) {
+      .stats-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>🇫🇷 France Seorae – Tableau de bord</h1>
+  <nav class="nav-links">
+    <a href="/admin" class="active">Participants</a>
+    <a href="/admin/questions">Questions</a>
+    <a href="/admin/logs">Statistiques</a>
+    <a href="/admin/logout">Déconnexion</a>
+  </nav>
+</header>
+
+<main>
+  <!-- ── Statistiques ── -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="num">{{ participants|length }}</div>
+      <div class="lbl">Participants inscrits</div>
+      <div class="sub">{{ termines }} terminé(s)</div>
+    </div>
+    <div class="stat-card" style="border-color:#C8A84B">
+      <div class="num" style="color:#C8A84B">
+        {{ participants[0].score if participants else '–' }}
+      </div>
+      <div class="lbl">Meilleur score</div>
+      <div class="sub">/ {{ total }} questions</div>
+    </div>
+    <div class="stat-card" style="border-color:#4F46E5">
+      <div class="num" style="color:#4F46E5">{{ avg_score }}</div>
+      <div class="lbl">Score moyen</div>
+      <div class="sub">parmi les inscrits</div>
+    </div>
+    <div class="stat-card" style="border-color:#ED2939">
+      <div class="num" style="color:#ED2939">{{ total }}</div>
+      <div class="lbl">Questions actives</div>
+    </div>
+    <div class="stat-card" style="border-color:#10B981">
+      <div class="num" style="color:#10B981">{{ total_logs }}</div>
+      <div class="lbl">Réponses enregistrées</div>
+      <div class="sub">depuis le début</div>
+    </div>
+    <div class="stat-card" style="border-color:#F59E0B">
+      <div class="num" style="color:#F59E0B">{{ pct_correct }}%</div>
+      <div class="lbl">Taux de bonnes réponses</div>
+      <div class="sub">toutes questions confondues</div>
+    </div>
+  </div>
+
+  <!-- ── Actions ── -->
+  <div class="actions-bar">
+    <a href="/admin/questions" class="action-btn btn-vert">📝 Gérer les questions</a>
+    <a href="/admin/logs"      class="action-btn btn-violet">📊 Voir les statistiques</a>
+    <a href="/admin/sync-map"  class="action-btn btn-bleu">🗺️ Synchroniser la carte</a>
+    <a href="/api/stats"       class="action-btn btn-export" target="_blank">📥 Export JSON</a>
+    <a href="/admin/logout"    class="action-btn btn-gris">Déconnexion</a>
+  </div>
+
+  <!-- ── Table participants ── -->
+  <div class="section-title">Classement des participants</div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Score</th>
+        <th>Réponses</th>
+        <th>Statut</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in participants %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td><strong>{{ p.prenom }}</strong></td>
+        <td>{{ p.nom }}</td>
+        <td style="color:#6B7280; font-size:0.82rem;">{{ p.email }}</td>
+        <td>
+          <span class="badge badge-or">{{ p.score }} / {{ total }}</span>
+        </td>
+        <td>{{ p.nb_reponses }}</td>
+        <td>
+          {% if p.termine %}
+          <span class="badge badge-ok">✅ Terminé</span>
+          {% else %}
+          <span class="badge badge-non">🔄 En cours</span>
+          {% endif %}
+        </td>
+        <td style="color:#6B7280; font-size:0.82rem;">{{ p.date_debut.strftime('%d/%m %H:%M') }}</td>
+      </tr>
+      {% endfor %}
+      {% if not participants %}
+      <tr>
+        <td colspan="8" style="text-align:center;color:#9CA3AF;padding:32px;">
+          Aucun participant inscrit pour l'instant.
+        </td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</main>
+</body>
+</html>

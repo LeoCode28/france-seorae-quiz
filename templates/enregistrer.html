@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block score_header %}{{ score }} {{ t('score_pts') }}{% endblock %}
+
+{% block content %}
+<div class="ornement">🏅</div>
+
+<div class="card" style="text-align:center; margin-bottom:14px;">
+  <div class="score-cercle" style="width:108px;height:108px;margin-bottom:14px;">
+    <div class="score-nombre" style="font-size:2.1rem;">{{ score }}</div>
+    <div class="score-sur">/ {{ total }} {{ t('score_pts') }}</div>
+  </div>
+  <h2 style="margin-bottom:4px;">{{ score }} / {{ total }}</h2>
+  <p style="color:var(--gris); font-size:0.93rem;">{{ nb_repondu }} {{ t('final_answered') }}</p>
+</div>
+
+<div class="card">
+  <h1 style="font-size:1.45rem; margin-bottom:7px;">{{ t('register_title') }}</h1>
+  <p class="subtitle">{{ t('register_subtitle') }}</p>
+
+  {% if erreur %}
+  <div class="alerte">{{ erreur }}</div>
+  {% endif %}
+
+  <form method="POST" action="/enregistrer">
+    <div class="form-group">
+      <label>{{ t('register_firstname') }}</label>
+      <input type="text" name="prenom" placeholder="{{ t('register_firstname_ph') }}" required autocomplete="given-name" />
+    </div>
+    <div class="form-group">
+      <label>{{ t('register_lastname') }}</label>
+      <input type="text" name="nom" placeholder="{{ t('register_lastname_ph') }}" required autocomplete="family-name" />
+    </div>
+    <div class="form-group">
+      <label>{{ t('register_email') }}</label>
+      <input type="email" name="email" placeholder="{{ t('register_email_ph') }}" required autocomplete="email" />
+    </div>
+    <button type="submit" class="btn btn-primary">{{ t('register_btn') }}</button>
+  </form>
+
+  <div style="margin-top:13px;">
+    <a href="/resultats_finaux" class="btn btn-secondary">{{ t('register_skip') }}</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>{{ 'Modifier' if mode == 'modifier' else 'Nouvelle' }} question – Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#F8FAFC;color:#1a1a2e}
+    header{background:#1e293b;color:white;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    header h1{font-size:1.1rem}
+    .nav-links{display:flex;gap:10px}
+    .nav-links a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.2)}
+    .nav-links a:hover{background:rgba(255,255,255,0.1)}
+    main{max-width:760px;margin:28px auto;padding:0 20px 60px}
+
+    /* ── Card ── */
+    .card{background:white;border-radius:16px;padding:32px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border-top:5px solid #002395}
+    h2{font-size:1.35rem;color:#002395;margin-bottom:5px}
+    .sous-titre{color:#6B7280;font-size:0.9rem;margin-bottom:24px}
+
+    /* ── Erreurs ── */
+    .erreurs{background:#FEF2F2;border:2px solid #FECACA;border-radius:10px;padding:14px 18px;margin-bottom:20px}
+    .erreurs p{color:#DC2626;font-size:0.87rem;margin-bottom:3px}
+    .erreurs p:last-child{margin-bottom:0}
+
+    /* ── Form elements ── */
+    .form-group{margin-bottom:16px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    label{display:block;font-weight:600;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;color:#002395;margin-bottom:6px}
+    label .hint{font-weight:400;text-transform:none;letter-spacing:0;color:#9CA3AF;font-size:0.79rem;margin-left:5px}
+    input[type=text],textarea{width:100%;padding:11px 13px;border:2px solid #E5E7EB;border-radius:10px;font-size:0.93rem;font-family:'DM Sans',sans-serif;background:#FAFAFA;transition:border-color 0.2s}
+    input:focus,textarea:focus{outline:none;border-color:#002395;background:white}
+    textarea{resize:vertical;min-height:76px;line-height:1.5}
+    .reponse-input{border-color:#065F46 !important;background:#F0FDF4}
+    .section-sep{border:none;border-top:2px dashed #E5E7EB;margin:20px 0}
+
+    /* ── Choix ── */
+    .choix-section{background:#F8FAFC;border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid #E5E7EB}
+    .choix-section h3{font-size:0.85rem;font-weight:700;color:#374151;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.04em}
+    .choix-item{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+    .choix-item:last-child{margin-bottom:0}
+    .choix-lettre{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.82rem;flex-shrink:0;color:white}
+    .choix-item input{margin:0;flex:1}
+
+    /* ── Lang tabs ── */
+    .lang-tabs{display:flex;gap:2px;border-bottom:2px solid #E5E7EB;margin-bottom:0}
+    .lang-tab-btn{
+      padding:9px 20px;border:none;background:none;font-family:'DM Sans',sans-serif;
+      font-size:0.88rem;font-weight:600;cursor:pointer;color:#6B7280;
+      border-bottom:3px solid transparent;margin-bottom:-2px;transition:color 0.15s;
+    }
+    .lang-tab-btn.active{color:#002395;border-bottom-color:#002395}
+    .lang-tab-btn .flag{margin-right:5px}
+    .lang-panel{display:none;padding-top:20px}
+    .lang-panel.active{display:block}
+    .lang-panel-header{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+    .lang-badge{background:#EEF1FF;color:#002395;padding:3px 12px;border-radius:20px;font-size:0.8rem;font-weight:700}
+    .lang-optional{color:#9CA3AF;font-size:0.8rem}
+    .lang-required{color:#DC2626;font-size:0.8rem;font-weight:600}
+
+    /* ── Buttons ── */
+    .btn-row{display:flex;gap:12px;margin-top:24px}
+    .btn-save{background:#002395;color:white;padding:13px 26px;border-radius:10px;font-size:0.97rem;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;flex:1}
+    .btn-save:hover{background:#001a6e}
+    .btn-cancel{background:#F1F5F9;color:#374151;padding:13px 18px;border-radius:10px;font-size:0.97rem;font-weight:600;text-decoration:none;text-align:center;border:2px solid #E5E7EB}
+    .btn-cancel:hover{background:#E5E7EB}
+
+    @media(max-width:520px){.form-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header>
+  <h1>France Seorae Admin</h1>
+  <nav class="nav-links">
+    <a href="/admin">Participants</a>
+    <a href="/admin/questions">Questions</a>
+    <a href="/admin/logout">Déconnexion</a>
+  </nav>
+</header>
+<main>
+  <div class="card">
+    <h2>{{ 'Modifier la question' if mode == 'modifier' else 'Nouvelle question' }}</h2>
+    {% if mode == 'modifier' %}
+    <p class="sous-titre">Modification : {{ q.rue }}</p>
+    {% else %}
+    <p class="sous-titre">Remplis les champs pour ajouter une question. Le français est obligatoire, l'anglais et le coréen sont optionnels.</p>
+    {% endif %}
+
+    {% if erreurs %}
+    <div class="erreurs">{% for e in erreurs %}<p>– {{ e }}</p>{% endfor %}</div>
+    {% endif %}
+
+    <form method="POST">
+
+      <!-- ── Code + Rue (commun à toutes les langues) ── -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Code de la plaque <span class="hint">(ex: 1031)</span></label>
+          <input type="text" name="code" value="{{ form.get('code','') }}" placeholder="1031" maxlength="10" required />
+        </div>
+        <div class="form-group">
+          <label>Nom de rue / Personnage</label>
+          <input type="text" name="rue" value="{{ form.get('rue','') }}" placeholder="Rue Claude MONET" required />
+        </div>
+      </div>
+
+      <hr class="section-sep" />
+
+      <!-- ── Onglets langues ── -->
+      <div class="lang-tabs">
+        <button type="button" class="lang-tab-btn active" onclick="switchLang('fr', this)">
+          <span class="flag">🇫🇷</span>Français <span style="color:#DC2626;font-size:0.75rem">*</span>
+        </button>
+        <button type="button" class="lang-tab-btn" onclick="switchLang('en', this)">
+          <span class="flag">🇬🇧</span>English
+        </button>
+        <button type="button" class="lang-tab-btn" onclick="switchLang('ko', this)">
+          <span class="flag">🇰🇷</span>한국어
+        </button>
+      </div>
+
+      <!-- ══ PANEL FRANÇAIS ══ -->
+      <div class="lang-panel active" id="panel-fr">
+        <div class="lang-panel-header">
+          <span class="lang-badge">🇫🇷 Français</span>
+          <span class="lang-required">* Obligatoire</span>
+        </div>
+
+        <div class="form-group">
+          <label>Question</label>
+          <textarea name="question" placeholder="De quel mouvement artistique Claude Monet est-il un des fondateurs ?" required>{{ form.get('question','') }}</textarea>
+        </div>
+
+        <div class="choix-section">
+          <h3>Les 3 choix de réponse</h3>
+          <div class="choix-item">
+            <div class="choix-lettre" style="background:#002395">A</div>
+            <input type="text" name="choix1" value="{{ form.get('choix1','') }}" placeholder="Choix A" required />
+          </div>
+          <div class="choix-item">
+            <div class="choix-lettre" style="background:#002395">B</div>
+            <input type="text" name="choix2" value="{{ form.get('choix2','') }}" placeholder="Choix B" required />
+          </div>
+          <div class="choix-item">
+            <div class="choix-lettre" style="background:#002395">C</div>
+            <input type="text" name="choix3" value="{{ form.get('choix3','') }}" placeholder="Choix C" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Bonne réponse <span class="hint">(doit correspondre exactement à un choix)</span></label>
+          <input type="text" name="reponse" value="{{ form.get('reponse','') }}" placeholder="Ex: L'impressionnisme" class="reponse-input" required />
+        </div>
+
+        <hr class="section-sep" />
+        <div class="form-group">
+          <label>Commentaire si bonne réponse</label>
+          <textarea name="commentaire_bon" placeholder="Bravo ! ...">{{ form.get('commentaire_bon','') }}</textarea>
+        </div>
+        <div class="form-group">
+          <label>Commentaire si mauvaise réponse</label>
+          <textarea name="commentaire_mauvais" placeholder="La bonne réponse est ...">{{ form.get('commentaire_mauvais','') }}</textarea>
+        </div>
+      </div>
+
+      <!-- ══ PANEL ENGLISH ══ -->
+      <div class="lang-panel" id="panel-en">
+        <div class="lang-panel-header">
+          <span class="lang-badge">🇬🇧 English</span>
+          <span class="lang-optional">Optional – leave blank to use French as fallback</span>
+        </div>
+
+        <div class="form-group">
+          <label>Question</label>
+          <textarea name="question_en" placeholder="Which artistic movement was Claude Monet one of the founders of?">{{ form.get('question_en','') }}</textarea>
+        </div>
+
+        <div class="choix-section">
+          <h3>The 3 answer choices</h3>
+          <div class="choix-item">
+            <div class="choix-lettre" style="background:#1a6b3c">A</div>
+            <input type="text" name="choix1_en" value="{{ form.get('choix1_en','') }}" placeholder="Choice A" />
+          </div>
+          <div class="choix-item">
+            <div class="choix-lettre" style="background:#1a6b3c">B</div>
+            <input type="text" name="choix2_en" value="{{ form.get('choix2_en','') }}" placeholder="Choice B" />
+          </div>
+          <div class="choix-item">
+            <div class="choix-lettre" style="background:#1a6b3c">C</div>
+            <input type="text" name="choix3_en" value="{{ form.get('choix3_en','') }}" placeholder="Choice C" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Correct answer <span class="hint">(must match exactly one of the 3 choices above)</span></label>
+          <input type="text" name="reponse_en" value="{{ form.get('reponse_en','') }}" placeholder="Ex: Impressionism" class="reponse-input" />
+        </div>
+
+        <hr class="section-sep" />
+        <div class="form-group">
+          <label>Comment if correct answer</label>
+          <textarea name="commentaire_bon_en" placeholder="Well done! ...">{{ form.get('commentaire_bon_en','') }}</textarea>
+        </div>
+        <div class="form-group">
+          <label>Comment if wrong answer</label>
+          <textarea name="commentaire_mauvais_en" placeholder="The correct answer is ...">{{ form.get('commentaire_mauvais_en','') }}</textarea>
+        </div>
+      </div>
+
+      <!-- ══ PANEL KOREAN ══ -->
+      <div class="lang-panel" id="panel-ko">
+        <div class="lang-panel-header">
+          <span class="lang-badge">🇰🇷 한국어</span>
+          <span class="lang-optional">선택 사항 – 비워두면 프랑스어가 기본으로 사용됩니다</span>
+        </div>
+
+        <div class="form-group">
+          <label>질문</label>
+          <textarea name="question_ko" placeholder="클로드 모네는 어떤 예술 운동의 창시자 중 한 명인가요?">{{ form.get('question_ko','') }}</textarea>
+        </div>
+
+        <div class="choix-section">
+          <h3>3가지 답변 선택지</h3>
+          <div class="choix-item">
+            <div class="choix-lettre" style="background:#c0392b">A</div>
+            <input type="text" name="choix1_ko" value="{{ form.get('choix1_ko','') }}" placeholder="선택지 A" />
+          </div>
+          <div class="choix-item">
+            <div class="choix-lettre" style="background:#c0392b">B</div>
+            <input type="text" name="choix2_ko" value="{{ form.get('choix2_ko','') }}" placeholder="선택지 B" />
+          </div>
+          <div class="choix-item">
+            <div class="choix-lettre" style="background:#c0392b">C</div>
+            <input type="text" name="choix3_ko" value="{{ form.get('choix3_ko','') }}" placeholder="선택지 C" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>정답 <span class="hint">(위의 3가지 선택지 중 하나와 정확히 일치해야 합니다)</span></label>
+          <input type="text" name="reponse_ko" value="{{ form.get('reponse_ko','') }}" placeholder="예: 인상주의" class="reponse-input" />
+        </div>
+
+        <hr class="section-sep" />
+        <div class="form-group">
+          <label>정답일 때 코멘트</label>
+          <textarea name="commentaire_bon_ko" placeholder="잘했어요! ...">{{ form.get('commentaire_bon_ko','') }}</textarea>
+        </div>
+        <div class="form-group">
+          <label>오답일 때 코멘트</label>
+          <textarea name="commentaire_mauvais_ko" placeholder="정답은 ...">{{ form.get('commentaire_mauvais_ko','') }}</textarea>
+        </div>
+      </div>
+
+      <!-- ── Boutons ── -->
+      <div class="btn-row">
+        <a href="/admin/questions" class="btn-cancel">Annuler</a>
+        <button type="submit" class="btn-save">
+          {{ 'Enregistrer les modifications' if mode == 'modifier' else 'Ajouter la question' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</main>
+
+<script>
+function switchLang(lang, btn) {
+  document.querySelectorAll('.lang-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.lang-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + lang).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

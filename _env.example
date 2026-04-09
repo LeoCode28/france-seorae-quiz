@@ -1,0 +1,11 @@
+# ============================================================
+#  FRANCE SEORAE – Exemple de configuration
+#  Copie ce fichier en ".env" et remplis les valeurs.
+#  Ne commite JAMAIS le vrai .env sur Git.
+# ============================================================
+
+SECRET_KEY=change-moi-avant-de-deployer
+ADMIN_PASSWORD=ton-mot-de-passe-admin
+GOOGLE_MAPS_KEY=ta-cle-google-maps
+FLASK_DEBUG=false
+FLASK_ENV=production

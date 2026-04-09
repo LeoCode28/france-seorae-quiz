@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Gestion des questions – Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#F8FAFC;color:#1a1a2e}
+    header{background:#1e293b;color:white;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    header h1{font-size:1.1rem}
+    .nav-links{display:flex;gap:10px;flex-wrap:wrap}
+    .nav-links a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.2)}
+    .nav-links a:hover{background:rgba(255,255,255,0.1)}
+    .nav-links a.active{background:#002395;border-color:#002395;color:white}
+    main{max-width:1100px;margin:28px auto;padding:0 20px}
+    .top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px}
+    .top-bar h2{font-size:1.3rem;color:#1e293b}
+    .btn-add{background:#002395;color:white;padding:10px 20px;border-radius:10px;text-decoration:none;font-weight:600;font-size:0.9rem}
+    .btn-add:hover{background:#001a6e}
+
+    /* ── Barre de recherche & filtres ── */
+    .filter-bar{
+      display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+      background:white;border-radius:14px;padding:14px 18px;
+      box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;
+    }
+    .search-wrap{flex:1;min-width:180px;position:relative;}
+    .search-wrap input{
+      width:100%;padding:9px 14px 9px 36px;
+      border:2px solid #E5E7EB;border-radius:10px;
+      font-size:0.92rem;font-family:'DM Sans',sans-serif;
+      background:#F8FAFC;transition:border-color 0.2s;
+    }
+    .search-wrap input:focus{outline:none;border-color:#002395;background:white}
+    .search-icon{
+      position:absolute;left:10px;top:50%;transform:translateY(-50%);
+      color:#9CA3AF;font-size:1rem;pointer-events:none;
+    }
+    .filter-btns{display:flex;gap:6px;flex-wrap:wrap}
+    .filter-btn{
+      padding:7px 16px;border-radius:8px;font-size:0.82rem;font-weight:600;
+      cursor:pointer;border:2px solid #E5E7EB;background:white;
+      color:#6B7280;font-family:'DM Sans',sans-serif;transition:all 0.15s;
+    }
+    .filter-btn:hover{border-color:#002395;color:#002395}
+    .filter-btn.active{background:#002395;color:white;border-color:#002395}
+    .filter-btn.active-green{background:#065F46;color:white;border-color:#065F46}
+    .filter-btn.active-amber{background:#92400E;color:white;border-color:#92400E}
+    .result-count{font-size:0.82rem;color:#9CA3AF;white-space:nowrap;margin-left:auto}
+
+    .flash{padding:12px 18px;border-radius:10px;margin-bottom:18px;font-size:0.9rem;font-weight:600;background:#D1FAE5;color:#065F46;border:1px solid #86EFAC}
+    .stats-mini{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+    .stat-pill{background:white;border-radius:10px;padding:10px 18px;font-size:0.85rem;box-shadow:0 1px 6px rgba(0,0,0,0.07);display:flex;gap:8px;align-items:center}
+    .stat-pill strong{color:#002395;font-size:1.1rem}
+
+    table{width:100%;border-collapse:collapse;background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07)}
+    thead{background:#002395;color:white}
+    th{padding:13px 14px;text-align:left;font-size:0.82rem;font-weight:600;white-space:nowrap}
+    td{padding:12px 14px;border-bottom:1px solid #F1F5F9;font-size:0.88rem;vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr.en-pause td{background:#FFFBEB}
+    tr.row-hidden{display:none}
+
+    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.75rem;font-weight:700}
+    .badge-actif{background:#D1FAE5;color:#065F46}
+    .badge-pause{background:#FEF3C7;color:#92400E}
+    .code-tag{font-family:monospace;background:#EEF1FF;color:#002395;padding:3px 10px;border-radius:6px;font-weight:700;font-size:0.9rem}
+    .actions{display:flex;gap:6px;flex-wrap:wrap}
+    .btn-sm{padding:6px 12px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:4px;font-family:'DM Sans',sans-serif}
+    .btn-edit{background:#EEF1FF;color:#002395}
+    .btn-edit:hover{background:#002395;color:white}
+    .btn-pause{background:#FEF3C7;color:#92400E}
+    .btn-pause:hover{background:#FCD34D;color:#78350F}
+    .btn-resume{background:#D1FAE5;color:#065F46}
+    .btn-resume:hover{background:#34D399;color:white}
+    .btn-delete{background:#FEE2E2;color:#DC2626}
+    .btn-delete:hover{background:#DC2626;color:white}
+    .q-text{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#374151;display:block}
+    .reponse-ok{color:#065F46;font-weight:600;font-size:0.82rem}
+
+    /* ── Empty state ── */
+    .empty-state{
+      text-align:center;padding:40px 20px;color:#6B7280;font-size:0.9rem;
+      display:none;
+    }
+    .empty-state .icon{font-size:2.5rem;margin-bottom:8px;}
+
+    /* ── Confirm modal ── */
+    .confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center}
+    .confirm-overlay.open{display:flex}
+    .confirm-box{background:white;border-radius:16px;padding:32px;max-width:380px;width:90%;text-align:center}
+    .confirm-box h3{margin-bottom:10px;color:#DC2626}
+    .confirm-box p{color:#6B7280;font-size:0.9rem;margin-bottom:24px;line-height:1.5}
+    .confirm-btns{display:flex;gap:10px;justify-content:center}
+    .confirm-btns button,.confirm-btns .btn-ok{padding:10px 22px;border-radius:10px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;font-size:0.9rem}
+    .confirm-cancel{background:#F1F5F9;color:#374151}
+    .btn-ok{background:#DC2626;color:white}
+
+    @media(max-width:700px){th:nth-child(4),td:nth-child(4){display:none}}
+  </style>
+</head>
+<body>
+<header>
+  <h1>France Seorae Admin</h1>
+  <nav class="nav-links">
+    <a href="/admin">Participants</a>
+    <a href="/admin/questions" class="active">Questions</a>
+    <a href="/admin/logs">Statistiques</a>
+    <a href="/admin/logout">Déconnexion</a>
+  </nav>
+</header>
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in messages %}
+      <div class="flash">{{ msg }}</div>
+    {% endfor %}
+  {% endwith %}
+
+  <div class="top-bar">
+    <h2>Gestion des questions</h2>
+    <a href="/admin/questions/nouvelle" class="btn-add">+ Ajouter une question</a>
+  </div>
+
+  <!-- Compteurs rapides -->
+  <div class="stats-mini">
+    <div class="stat-pill"><strong>{{ questions|length }}</strong>&nbsp;total</div>
+    <div class="stat-pill"><strong style="color:#065F46">{{ questions|selectattr('active')|list|length }}</strong>&nbsp;actives</div>
+    <div class="stat-pill"><strong style="color:#92400E">{{ questions|rejectattr('active')|list|length }}</strong>&nbsp;en pause</div>
+  </div>
+
+  <!-- Barre de recherche + filtres -->
+  <div class="filter-bar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Rechercher par rue, code ou question…"
+        autocomplete="off"
+        oninput="applyFilters()"
+      />
+    </div>
+    <div class="filter-btns">
+      <button class="filter-btn active" id="btn-tous"   onclick="setFilter('tous',  this)">Tous</button>
+      <button class="filter-btn"        id="btn-actif"  onclick="setFilter('actif', this)">Actives</button>
+      <button class="filter-btn"        id="btn-pause"  onclick="setFilter('pause', this)">En pause</button>
+    </div>
+    <span class="result-count" id="resultCount"></span>
+  </div>
+
+  <table id="questionsTable">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Rue / Personnage</th>
+        <th>Question</th>
+        <th>Bonne réponse</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      {% for q in questions %}
+      <tr
+        class="{{ '' if q.active else 'en-pause' }}"
+        data-statut="{{ 'actif' if q.active else 'pause' }}"
+        data-search="{{ (q.code ~ ' ' ~ q.rue ~ ' ' ~ q.question)|lower }}"
+      >
+        <td><span class="code-tag">{{ q.code }}</span></td>
+        <td><strong>{{ q.rue }}</strong></td>
+        <td><span class="q-text" title="{{ q.question }}">{{ q.question }}</span></td>
+        <td><span class="reponse-ok">{{ q.reponse }}</span></td>
+        <td>
+          {% if q.active %}
+          <span class="badge badge-actif">Active</span>
+          {% else %}
+          <span class="badge badge-pause">En pause</span>
+          {% endif %}
+        </td>
+        <td>
+          <div class="actions">
+            <a href="/admin/questions/{{ q.id }}/modifier" class="btn-sm btn-edit">Modifier</a>
+            <form method="POST" action="/admin/questions/{{ q.id }}/pause" style="display:inline">
+              {% if q.active %}
+              <button type="submit" class="btn-sm btn-pause">Pause</button>
+              {% else %}
+              <button type="submit" class="btn-sm btn-resume">Activer</button>
+              {% endif %}
+            </form>
+            <button class="btn-sm btn-delete" onclick="confirmer({{ q.id }}, '{{ q.rue|replace("'","\\'")|replace('"','\\"') }}')">Supprimer</button>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- État vide (recherche sans résultat) -->
+  <div class="empty-state" id="emptyState">
+    <div class="icon">🔍</div>
+    Aucune question ne correspond à ta recherche.
+  </div>
+
+</main>
+
+<!-- Modale de confirmation de suppression -->
+<div class="confirm-overlay" id="overlay">
+  <div class="confirm-box">
+    <h3>Supprimer cette question ?</h3>
+    <p id="confirmMsg"></p>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="fermer()">Annuler</button>
+      <form id="confirmForm" method="POST" style="display:inline">
+        <button type="submit" class="btn-ok">Supprimer</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  var currentFilter = 'tous';
+
+  // ── Filtrage par statut ──────────────────────────────────────
+  function setFilter(statut, btn) {
+    currentFilter = statut;
+    // Mise à jour des boutons actifs
+    document.querySelectorAll('.filter-btn').forEach(function(b) {
+      b.classList.remove('active', 'active-green', 'active-amber');
+    });
+    if (statut === 'actif') {
+      btn.classList.add('active-green');
+    } else if (statut === 'pause') {
+      btn.classList.add('active-amber');
+    } else {
+      btn.classList.add('active');
+    }
+    applyFilters();
+  }
+
+  // ── Filtrage combiné (texte + statut) ───────────────────────
+  function applyFilters() {
+    var search   = document.getElementById('searchInput').value.toLowerCase().trim();
+    var rows     = document.querySelectorAll('#tableBody tr');
+    var visible  = 0;
+
+    rows.forEach(function(row) {
+      var matchSearch = !search || row.dataset.search.includes(search);
+      var matchStatut = (currentFilter === 'tous') ||
+                        (currentFilter === row.dataset.statut);
+      if (matchSearch && matchStatut) {
+        row.classList.remove('row-hidden');
+        visible++;
+      } else {
+        row.classList.add('row-hidden');
+      }
+    });
+
+    // Compteur de résultats
+    var total = rows.length;
+    var countEl = document.getElementById('resultCount');
+    if (search || currentFilter !== 'tous') {
+      countEl.textContent = visible + ' / ' + total + ' question' + (total > 1 ? 's' : '');
+    } else {
+      countEl.textContent = '';
+    }
+
+    // État vide
+    document.getElementById('emptyState').style.display = (visible === 0) ? 'block' : 'none';
+  }
+
+  // ── Modale de suppression ────────────────────────────────────
+  function confirmer(id, rue) {
+    document.getElementById('confirmMsg').textContent = 'Supprimer "' + rue + '" ? Action irréversible.';
+    document.getElementById('confirmForm').action = '/admin/questions/' + id + '/supprimer';
+    document.getElementById('overlay').classList.add('open');
+  }
+  function fermer() { document.getElementById('overlay').classList.remove('open'); }
+  document.getElementById('overlay').addEventListener('click', function(e) {
+    if (e.target === this) fermer();
+  });
+
+  // Initialisation du compteur
+  applyFilters();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="text-align:center; padding: 40px 0;">
+  <div style="font-size:5rem; margin-bottom:14px;">⚠️</div>
+  <h1 style="font-size:1.75rem; margin-bottom:10px;">{{ t('err_500_title') }}</h1>
+  <p class="subtitle">{{ t('err_500_msg') }}</p>
+  <a href="/carte" class="btn btn-primary" style="max-width:280px; margin:0 auto;">{{ t('back_map') }}</a>
+</div>
+{% endblock %}

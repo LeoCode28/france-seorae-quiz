@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Statistiques – France Seorae Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#F8FAFC;color:#1a1a2e}
+
+    header{background:#1e293b;color:white;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    header h1{font-size:1.1rem}
+    .nav-links{display:flex;gap:10px;flex-wrap:wrap}
+    .nav-links a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.2)}
+    .nav-links a:hover{background:rgba(255,255,255,0.1)}
+    .nav-links a.active{background:#4F46E5;border-color:#4F46E5;color:white}
+
+    main{max-width:1200px;margin:28px auto;padding:0 20px 60px}
+
+    /* ── Cartes de stats ── */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+    .stat-card{background:white;border-radius:14px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.07);border-left:4px solid #4F46E5}
+    .stat-card .num{font-size:1.9rem;font-weight:700;color:#4F46E5;line-height:1.1}
+    .stat-card .lbl{font-size:0.8rem;color:#6B7280;margin-top:3px}
+    .stat-card .sub{font-size:0.73rem;color:#9CA3AF;margin-top:2px}
+
+    /* ── Section title ── */
+    .section{margin-bottom:28px}
+    .section-header{
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:14px;flex-wrap:wrap;gap:8px;
+    }
+    .section-title{font-size:1.05rem;font-weight:700;color:#1e293b}
+    .section-sub{font-size:0.82rem;color:#6B7280}
+
+    /* ── Tableaux ── */
+    .table-wrap{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07)}
+    table{width:100%;border-collapse:collapse}
+    thead{background:#1e293b;color:white}
+    th{padding:12px 16px;text-align:left;font-size:0.8rem;font-weight:600;white-space:nowrap}
+    td{padding:11px 16px;border-bottom:1px solid #F1F5F9;font-size:0.86rem;vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr:nth-child(even) td{background:#FAFBFC}
+
+    /* ── Barre de progression inline ── */
+    .pct-wrap{display:flex;align-items:center;gap:10px}
+    .pct-bar{flex:1;height:7px;background:#E5E7EB;border-radius:999px;overflow:hidden;min-width:60px}
+    .pct-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#4F46E5,#7C3AED)}
+    .pct-fill.danger{background:linear-gradient(90deg,#EF4444,#F97316)}
+    .pct-fill.success{background:linear-gradient(90deg,#10B981,#059669)}
+    .pct-num{font-weight:700;font-size:0.85rem;white-space:nowrap;min-width:36px;text-align:right}
+    .pct-na{color:#9CA3AF;font-size:0.82rem}
+
+    .code-tag{font-family:monospace;background:#EEF1FF;color:#002395;padding:2px 8px;border-radius:6px;font-weight:700;font-size:0.85rem}
+    .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:0.72rem;font-weight:700}
+    .badge-actif{background:#D1FAE5;color:#065F46}
+    .badge-pause{background:#FEF3C7;color:#92400E}
+    .badge-ok{background:#DCFCE7;color:#166534}
+    .badge-err{background:#FEF2F2;color:#DC2626}
+
+    /* ── Graphe journalier ── */
+    .chart-card{background:white;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.07)}
+    .chart-bars{display:flex;align-items:flex-end;gap:6px;height:100px;margin-top:12px}
+    .bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:0}
+    .bar{width:100%;background:linear-gradient(180deg,#4F46E5,#7C3AED);border-radius:4px 4px 0 0;min-height:3px;transition:opacity 0.15s}
+    .bar:hover{opacity:0.75}
+    .bar-label{font-size:0.65rem;color:#6B7280;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:32px}
+    .bar-val{font-size:0.7rem;font-weight:700;color:#4F46E5}
+    .no-data{text-align:center;color:#9CA3AF;font-size:0.9rem;padding:32px 0}
+
+    /* ── Activité récente ── */
+    .activity-list{list-style:none;display:flex;flex-direction:column;gap:0}
+    .activity-item{
+      display:flex;align-items:center;gap:12px;
+      padding:10px 16px;border-bottom:1px solid #F1F5F9;
+      font-size:0.86rem;
+    }
+    .activity-item:last-child{border-bottom:none}
+    .act-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0}
+    .act-ok{background:#D1FAE5}
+    .act-err{background:#FEF2F2}
+    .act-rue{font-weight:600;color:#1e293b;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .act-time{font-size:0.75rem;color:#9CA3AF;white-space:nowrap}
+
+    /* ── Tabs pour les tableaux questions ── */
+    .tabs{display:flex;gap:2px;margin-bottom:0;border-bottom:2px solid #E5E7EB}
+    .tab-btn{
+      padding:8px 18px;border:none;background:none;font-family:'DM Sans',sans-serif;
+      font-size:0.86rem;font-weight:600;cursor:pointer;color:#6B7280;
+      border-bottom:2px solid transparent;margin-bottom:-2px;transition:color 0.15s;
+    }
+    .tab-btn.active{color:#4F46E5;border-bottom-color:#4F46E5}
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+
+    /* ── Grid layout 2 cols ── */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+    @media(max-width:900px){
+      .stats-row{grid-template-columns:repeat(2,1fr)}
+      .grid-2{grid-template-columns:1fr}
+    }
+    @media(max-width:560px){
+      .stats-row{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>France Seorae Admin</h1>
+  <nav class="nav-links">
+    <a href="/admin">Participants</a>
+    <a href="/admin/questions">Questions</a>
+    <a href="/admin/logs" class="active">Statistiques</a>
+    <a href="/admin/logout">Déconnexion</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ══ 1. KPIs globaux ══════════════════════════════════════ -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="num">{{ total_logs }}</div>
+      <div class="lbl">Réponses enregistrées</div>
+      <div class="sub">{{ correct_logs }} correctes</div>
+    </div>
+    <div class="stat-card" style="border-color:#10B981">
+      <div class="num" style="color:#10B981">{{ pct_global }}%</div>
+      <div class="lbl">Taux de réussite global</div>
+      <div class="sub">toutes questions confondues</div>
+    </div>
+    <div class="stat-card" style="border-color:#C8A84B">
+      <div class="num" style="color:#C8A84B">{{ avg_score }}</div>
+      <div class="lbl">Score moyen</div>
+      <div class="sub">parmi les inscrits</div>
+    </div>
+    <div class="stat-card" style="border-color:#002395">
+      <div class="num" style="color:#002395">{{ total_participants }}</div>
+      <div class="lbl">Participants inscrits</div>
+      <div class="sub">{{ termines }} terminé(s)</div>
+    </div>
+  </div>
+
+  <!-- ══ 2. Graphe participants / jour + Activité récente ════ -->
+  <div class="grid-2" style="margin-bottom:28px">
+
+    <!-- Graphe -->
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">📅 Participants par jour</div>
+          <div class="section-sub">14 derniers jours</div>
+        </div>
+      </div>
+      <div class="chart-card">
+        {% if daily_sorted %}
+        <div class="chart-bars">
+          {% for day, count in daily_sorted %}
+          {% set pct_h = (count / max_daily * 100)|int %}
+          <div class="bar-col" title="{{ count }} participant(s) le {{ day }}">
+            <div class="bar-val">{{ count }}</div>
+            <div class="bar" style="height:{{ pct_h }}%;"></div>
+            <div class="bar-label">{{ day }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-data">Pas encore de données journalières.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Activité récente -->
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">⚡ Activité récente</div>
+          <div class="section-sub">30 dernières réponses</div>
+        </div>
+      </div>
+      <div class="table-wrap" style="max-height:240px;overflow-y:auto">
+        {% if recent %}
+        <ul class="activity-list">
+          {% for log in recent %}
+          <li class="activity-item">
+            <div class="act-icon {{ 'act-ok' if log.bonne else 'act-err' }}">
+              {{ '✅' if log.bonne else '❌' }}
+            </div>
+            <span class="act-rue">
+              {% if log.question %}
+                {{ log.question.rue }}
+              {% else %}
+                Question supprimée
+              {% endif %}
+            </span>
+            <span class="act-time">{{ log.date.strftime('%d/%m %H:%M') }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <div class="no-data">Aucune activité pour l'instant.</div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ 3. Statistiques par question ════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">📋 Statistiques par question</div>
+        <div class="section-sub">Taux de réussite, tentatives, difficulté</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('all', this)">Toutes ({{ q_stats|length }})</button>
+      <button class="tab-btn"        onclick="showTab('hard', this)">🔴 Les plus difficiles</button>
+      <button class="tab-btn"        onclick="showTab('pop', this)">🔥 Les plus tentées</button>
+    </div>
+
+    <!-- Tab : Toutes les questions -->
+    <div class="tab-panel active" id="tab-all">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Rue / Personnage</th>
+              <th>Tentatives</th>
+              <th>Correctes</th>
+              <th>Taux de réussite</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in q_stats %}
+            <tr>
+              <td><span class="code-tag">{{ s.code }}</span></td>
+              <td><strong>{{ s.rue }}</strong></td>
+              <td style="text-align:center">
+                <strong>{{ s.attempts }}</strong>
+              </td>
+              <td style="text-align:center;color:#065F46;font-weight:600">
+                {{ s.correct }}
+              </td>
+              <td>
+                {% if s.pct is not none %}
+                <div class="pct-wrap">
+                  <div class="pct-bar">
+                    <div class="pct-fill {% if s.pct < 40 %}danger{% elif s.pct >= 70 %}success{% endif %}"
+                         style="width:{{ s.pct }}%"></div>
+                  </div>
+                  <span class="pct-num" style="color:{% if s.pct < 40 %}#DC2626{% elif s.pct >= 70 %}#059669{% else %}#4F46E5{% endif %}">
+                    {{ s.pct }}%
+                  </span>
+                </div>
+                {% else %}
+                <span class="pct-na">—</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if s.active %}
+                <span class="badge badge-actif">Active</span>
+                {% else %}
+                <span class="badge badge-pause">En pause</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+            {% if not q_stats %}
+            <tr><td colspan="6" style="text-align:center;color:#9CA3AF;padding:32px">Aucune donnée.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab : Les plus difficiles -->
+    <div class="tab-panel" id="tab-hard">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Code</th>
+              <th>Rue / Personnage</th>
+              <th>Tentatives</th>
+              <th>Taux de réussite</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in q_stats_hardest %}
+            <tr>
+              <td><strong style="color:#DC2626">{{ loop.index }}</strong></td>
+              <td><span class="code-tag">{{ s.code }}</span></td>
+              <td><strong>{{ s.rue }}</strong></td>
+              <td style="text-align:center"><strong>{{ s.attempts }}</strong></td>
+              <td>
+                <div class="pct-wrap">
+                  <div class="pct-bar">
+                    <div class="pct-fill danger" style="width:{{ s.pct }}%"></div>
+                  </div>
+                  <span class="pct-num" style="color:#DC2626">{{ s.pct }}%</span>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+            {% if not q_stats_hardest %}
+            <tr><td colspan="5" style="text-align:center;color:#9CA3AF;padding:32px">Pas encore assez de données.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab : Les plus tentées -->
+    <div class="tab-panel" id="tab-pop">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Code</th>
+              <th>Rue / Personnage</th>
+              <th>Tentatives</th>
+              <th>Taux de réussite</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in q_stats_popular %}
+            <tr>
+              <td><strong style="color:#F59E0B">{{ loop.index }}</strong></td>
+              <td><span class="code-tag">{{ s.code }}</span></td>
+              <td><strong>{{ s.rue }}</strong></td>
+              <td style="text-align:center"><strong style="color:#4F46E5;font-size:1.1rem">{{ s.attempts }}</strong></td>
+              <td>
+                {% if s.pct is not none %}
+                <div class="pct-wrap">
+                  <div class="pct-bar">
+                    <div class="pct-fill {% if s.pct < 40 %}danger{% elif s.pct >= 70 %}success{% endif %}"
+                         style="width:{{ s.pct }}%"></div>
+                  </div>
+                  <span class="pct-num">{{ s.pct }}%</span>
+                </div>
+                {% else %}
+                <span class="pct-na">—</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+            {% if not q_stats_popular %}
+            <tr><td colspan="5" style="text-align:center;color:#9CA3AF;padding:32px">Pas encore assez de données.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  function showTab(name, btn) {
+    // Cacher tous les panels
+    document.querySelectorAll('.tab-panel').forEach(function(p) {
+      p.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    // Afficher le panel choisi
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
