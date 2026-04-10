@@ -23,12 +23,17 @@
     /* ── HEADER ── */
     header {
       background: var(--bleu);
+<<<<<<< HEAD
       padding: 12px 20px;
+=======
+      padding: 10px 20px;
+>>>>>>> 7a3d501 (changement de la carte)
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
       box-shadow: 0 3px 16px var(--ombre);
       position: sticky; top: 0; z-index: 100;
     }
     .logo {
+<<<<<<< HEAD
       font-family: 'Playfair Display', serif;
       font-size: 1.1rem; color: var(--blanc);
       display: flex; align-items: center; gap: 8px;
@@ -42,6 +47,33 @@
     .tricolore .w { background: var(--blanc); }
     .tricolore .r { background: var(--rouge); }
     .logo-text { white-space: nowrap; }
+=======
+      color: var(--blanc);
+      display: flex; align-items: center; gap: 12px;
+      flex-shrink: 0;
+      text-decoration: none;
+      min-width: 0;
+    }
+    .logo-img {
+      height: 44px; width: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .tricolore {
+      display: flex; height: 28px; border-radius: 3px; overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3); flex-shrink: 0;
+    }
+    .tricolore div { width: 10px; }
+    .tricolore .b { background: var(--bleu); }
+    .tricolore .w { background: var(--blanc); }
+    .tricolore .r { background: var(--rouge); }
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; font-weight: 700;
+      white-space: nowrap;
+      color: var(--blanc);
+    }
+>>>>>>> 7a3d501 (changement de la carte)
 
     .header-right { display: flex; align-items: center; gap: 8px; }
 
@@ -186,6 +218,7 @@
     .rue-tag { display: inline-flex; align-items: center; gap: 6px; background: #EEF1FF; color: var(--bleu); padding: 5px 13px; border-radius: 20px; font-size: 0.83rem; font-weight: 600; margin-bottom: 14px; }
 
     /* ── RESPONSIVE ── */
+<<<<<<< HEAD
     @media (max-width: 480px) {
       main { padding: 18px 12px 70px; }
       .card { padding: 22px 16px; }
@@ -197,6 +230,24 @@
       .tricolore div { width: 6px; }
       .score-badge { padding: 4px 10px; font-size: 0.75rem; }
     }
+=======
+    @media (max-width: 600px) {
+      main { padding: 18px 12px 70px; }
+      .card { padding: 22px 16px; }
+      h1 { font-size: 1.55rem; }
+      header { padding: 8px 12px; }
+      .logo { gap: 8px; }
+      .logo-img { height: 36px; }
+      .tricolore { height: 22px; }
+      .tricolore div { width: 7px; }
+      .logo-text { font-size: 0.95rem; }
+      .score-badge { padding: 4px 10px; font-size: 0.75rem; }
+    }
+    @media (max-width: 400px) {
+      .tricolore { display: none; }
+      .logo-text { font-size: 0.88rem; }
+    }
+>>>>>>> 7a3d501 (changement de la carte)
   </style>
   {% block extra_head %}{% endblock %}
 </head>
