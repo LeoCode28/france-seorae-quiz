@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin – Connexion</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #F8FAFC; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .box { background: white; border-radius: 16px; padding: 40px 36px; width: 100%; max-width: 380px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 5px solid #002395; }
+    h1 { font-size: 1.4rem; color: #002395; margin-bottom: 8px; }
+    p { color: #6B7280; font-size: 0.9rem; margin-bottom: 24px; }
+    label { display: block; font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; color: #002395; margin-bottom: 8px; }
+    input { width: 100%; padding: 13px 16px; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 1rem; font-family: inherit; }
+    input:focus { outline: none; border-color: #002395; }
+    button { width: 100%; margin-top: 16px; padding: 14px; background: #002395; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+    button:hover { background: #001a6e; }
+    .alerte { background: #FEF2F2; border: 2px solid #FECACA; color: #DC2626; padding: 10px 14px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>🔒 Espace admin</h1>
+    <p>France Seorae – Tableau de bord</p>
+    {% if erreur %}<div class="alerte">{{ erreur }}</div>{% endif %}
+    <form method="POST" action="/admin">
+      <label>Mot de passe</label>
+      <input type="password" name="password" required autofocus placeholder="••••••••" />
+      <button type="submit">Accéder au tableau de bord</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block score_header %}{{ t('result_score') }}{% endblock %}
+
+{% block extra_head %}
+<style>
+@keyframes pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  70%  { transform: scale(1.1); }
+  100% { transform: scale(1);   opacity: 1; }
+}
+.score-cercle { animation: pop 0.6s ease forwards; }
+.etoiles { font-size: 2.4rem; letter-spacing: 4px; margin-bottom:7px; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% set pct = (score / total * 100)|int if total > 0 else 0 %}
+
+<div class="card" style="text-align:center;">
+  {% if pct >= 80 %}
+  <div class="etoiles">⭐⭐⭐</div>
+  {% elif pct >= 50 %}
+  <div class="etoiles">⭐⭐</div>
+  {% else %}
+  <div class="etoiles">⭐</div>
+  {% endif %}
+
+  <div class="score-cercle">
+    <div class="score-nombre">{{ score }}</div>
+    <div class="score-sur">/ {{ total }} {{ t('score_pts') }}</div>
+  </div>
+
+  <h1 style="margin-bottom:7px;">
+    {% if pct >= 80 %}{{ t('final_stars_3') }}
+    {% elif pct >= 60 %}{{ t('final_stars_2') }}
+    {% elif pct >= 40 %}{{ t('final_stars_15') }}
+    {% else %}{{ t('final_stars_1') }}
+    {% endif %}
+  </h1>
+
+  {% if participant %}
+  <p style="color:var(--gris); font-size:0.97rem; margin-bottom:7px;">
+    {{ participant.prenom }} {{ participant.nom }}
+  </p>
+  <p style="color:#15803D; font-size:0.88rem; margin-bottom:7px;">{{ t('final_registered') }}</p>
+  {% endif %}
+
+  <p style="color:var(--gris); font-size:0.88rem; margin-bottom:22px;">
+    {{ nb_repondu }} {{ t('final_answered') }} · {{ score }} {{ t('final_correct') }}
+  </p>
+
+  <div class="progress-bar" style="margin-bottom:5px;">
+    <div class="progress-fill" style="width:{{ pct }}%"></div>
+  </div>
+  <div class="progress-label">{{ pct }}{{ t('final_good_pct') }}</div>
+</div>
+
+{% if not participant %}
+<div class="card" style="margin-top:14px; border-top-color:var(--or);">
+  <p style="font-size:0.93rem; color:#374151; line-height:1.6; margin-bottom:13px;">
+    {{ t('final_save_prompt') }}
+  </p>
+  <a href="/enregistrer" class="btn btn-or">{{ t('final_save_btn') }}</a>
+</div>
+{% endif %}
+
+<div style="margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:11px;">
+  <a href="/carte" class="btn btn-secondary" style="font-size:0.88rem;">{{ t('final_back_map') }}</a>
+  <a href="/" class="btn btn-rouge" style="font-size:0.88rem;">{{ t('final_new_player') }}</a>
+</div>
+
+{% endblock %}

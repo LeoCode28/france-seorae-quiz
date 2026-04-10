@@ -1,0 +1,422 @@
+[
+  {
+    "id": 1,
+    "code": "1876",
+    "rue": "Rue Claude MONET",
+    "question": "De quel mouvement artistique Claude Monet est-il un des fondateurs ?",
+    "choix": [
+      "L'impressionnisme",
+      "Le cyclisme",
+      "L'optimisme"
+    ],
+    "reponse": "L'impressionnisme",
+    "commentaire_bon": "Bonne réponse ! L'impressionnisme est un mouvement pictural né de l'association d'artistes de la seconde moitié du XIXe siècle vivant en France (Renoir, Degas, Manet...). Ce mouvement est notamment caractérisé par des tableaux de petit format, des traits de pinceau visibles et une tendance à noter les impressions fugitives.",
+    "commentaire_mauvais": "La bonne réponse est « L'impressionnisme ». C'est un mouvement pictural né de l'association d'artistes de la seconde moitié du XIXe siècle vivant en France (Renoir, Degas, Manet...). Ce mouvement est notamment caractérisé par des tableaux de petit format, des traits de pinceau visibles et une tendance à noter les impressions fugitives."
+  },
+  {
+    "id": 2,
+    "code": "1002",
+    "rue": "Château de Chenonceau",
+    "question": "Quel est le style architectural du château de Chenonceau ?",
+    "choix": [
+      "Style Art nouveau",
+      "Style Renaissance",
+      "Style High Tech"
+    ],
+    "reponse": "Style Renaissance",
+    "commentaire_bon": "Félicitations ! Le style architectural Renaissance met en valeur les notions de symétrie, de proportion, de régularité et d'équilibre des motifs.",
+    "commentaire_mauvais": "La bonne réponse est le « Style Renaissance ». Il met en valeur les notions de symétrie, de proportion, de régularité et d'équilibre des motifs."
+  },
+  {
+    "id": 3,
+    "code": "5730",
+    "rue": "Rue Edith PIAF",
+    "question": "Avec quel autre chanteur français célèbre Edith Piaf se promenait-elle parfois en voiture ?",
+    "choix": [
+      "Charles Aznavour",
+      "Yves Montand",
+      "Julien Doré"
+    ],
+    "reponse": "Yves Montand",
+    "commentaire_bon": "Bravo ! Edith Piaf et Yves Montand sont deux chanteurs célèbres en France au milieu du 20e siècle.",
+    "commentaire_mauvais": "La bonne réponse est « Yves Montand ». Edith Piaf et Yves Montand sont deux chanteurs célèbres en France au milieu du 20e siècle."
+  },
+  {
+    "id": 4,
+    "code": "1004",
+    "rue": "Cyrano de Bergerac",
+    "question": "Pour quelle partie de son corps se moque-t-on de Cyrano de Bergerac ?",
+    "choix": [
+      "Les oreilles",
+      "Les pieds",
+      "Le nez"
+    ],
+    "reponse": "Le nez",
+    "commentaire_bon": "Cyrano est un poète. Au cours du 17ème siècle en France, Cyrano de Bergerac est un intrépide capitaine attifé d'un horrible nez. Il aide le beau Christian à rédiger des lettres d'amour pour séduire la belle Roxane.",
+    "commentaire_mauvais": "La bonne réponse est son nez. Cyrano de Bergerac est un intrépide capitaine attifé d'un horrible nez qui le rend disgracieux. Il aide le beau Christian à rédiger des lettres d'amour pour séduire la belle Roxane."
+  },
+  {
+    "id": 5,
+    "code": "2734",
+    "rue": "Rue Sophie MARCEAU",
+    "question": "Dans quel film Sophie Marceau devient-elle célèbre ?",
+    "choix": [
+      "Les amants du Pont Neuf",
+      "La Boum",
+      "Amélie Poulain"
+    ],
+    "reponse": "La Boum",
+    "commentaire_bon": "Bien joué ! La Boum est une comédie romantique française écrite et réalisée par Claude Pinoteau, sortie en 1980.",
+    "commentaire_mauvais": "La bonne réponse est « La Boum », une comédie romantique française écrite et réalisée par Claude Pinoteau, sortie en 1980."
+  },
+  {
+    "id": 6,
+    "code": "4782",
+    "rue": "Avenue MOLIÈRE",
+    "question": "Quel est le vrai nom de Molière ?",
+    "choix": [
+      "François Mitterrand",
+      "Jean-Baptiste Poquelin",
+      "Charles Trenet"
+    ],
+    "reponse": "Jean-Baptiste Poquelin",
+    "commentaire_bon": "Parfait ! François Mitterrand a été président de la République française de 1981 à 1995 et Charles Trenet était un chanteur.",
+    "commentaire_mauvais": "La bonne réponse est Jean-Baptiste Poquelin. François Mitterrand a été président de la République française de 1981 à 1995 et Charles Trenet était un chanteur."
+  },
+  {
+    "id": 7,
+    "code": "6187",
+    "rue": "Rue Camille CLAUDEL",
+    "question": "Camille Claudel est une sculptrice de renommée mondiale. Dans quelle autre forme d'art s'est-elle illustrée ?",
+    "choix": [
+      "La musique",
+      "L'écriture",
+      "La peinture"
+    ],
+    "reponse": "La peinture",
+    "commentaire_bon": "Bravo !",
+    "commentaire_mauvais": "La bonne réponse est la peinture."
+  },
+  {
+    "id": 8,
+    "code": "1008",
+    "rue": "Arsène Lupin / Étretat",
+    "question": "Dans quelle région de France se trouve la ville d'Étretat, le repère d'Arsène Lupin ?",
+    "choix": [
+      "En Pays de la Loire",
+      "En Normandie",
+      "En Bretagne"
+    ],
+    "reponse": "En Normandie",
+    "commentaire_bon": "Félicitations ! La ville d'Étretat, repère du gentleman cambrioleur, se trouve en Normandie, sur les côtes de la Manche entre Le Havre et Fécamp.",
+    "commentaire_mauvais": "La ville d'Étretat, repère du gentleman cambrioleur, se trouve en Normandie, sur les côtes de la Manche entre Le Havre et Fécamp."
+  },
+  {
+    "id": 9,
+    "code": "6976",
+    "rue": "Rue LE CORBUSIER",
+    "question": "Laquelle de ces trois réalisations n'est PAS imaginée par Le Corbusier ?",
+    "choix": [
+      "Les forts de Saint-Malo",
+      "La ville de Chandigarh en Inde",
+      "La Cité radieuse à Marseille"
+    ],
+    "reponse": "Les forts de Saint-Malo",
+    "commentaire_bon": "Félicitations ! Les forts de Saint-Malo ont été construits en 1689 par l'ingénieur Siméon Garangeau, d'après les plans de Vauban et sur les ordres du Roi Louis XIV.",
+    "commentaire_mauvais": "La bonne réponse est les forts de Saint-Malo, construits en 1689 par l'ingénieur Siméon Garangeau, d'après les plans de Vauban."
+  },
+  {
+    "id": 10,
+    "code": "9168",
+    "rue": "Rue Zinedine ZIDANE",
+    "question": "Dans quelle ville française est né Zinedine Zidane ?",
+    "choix": [
+      "Bordeaux",
+      "Marseille",
+      "Strasbourg"
+    ],
+    "reponse": "Marseille",
+    "commentaire_bon": "Bravo !",
+    "commentaire_mauvais": "La bonne réponse est Marseille, sur la Côte d'Azur, au bord de la Méditerranée, dans le Sud de la France."
+  },
+  {
+    "id": 11,
+    "code": "1011",
+    "rue": "Notre Dame de Paris",
+    "question": "Quel incident a connu Notre Dame de Paris en 2019 ?",
+    "choix": [
+      "L'érosion à cause de la pluie",
+      "Un séisme",
+      "Un incendie"
+    ],
+    "reponse": "Un incendie",
+    "commentaire_bon": "Quelle érudition ! La cathédrale Notre-Dame de Paris a été construite entre les XIIe et XIVe siècles sur l'île de la Cité, au cœur de Paris.",
+    "commentaire_mauvais": "La bonne réponse est un incendie. La cathédrale Notre-Dame de Paris, construite entre les XIIe et XIVe siècles, n'avait jusqu'ici jamais été touchée par un incendie."
+  },
+  {
+    "id": 12,
+    "code": "1012",
+    "rue": "Cosette",
+    "question": "De quel roman français est issu le personnage de Cosette ?",
+    "choix": [
+      "\"Germinal\" d'Emile Zola",
+      "\"Les Misérables\" de Victor Hugo",
+      "\"Madame Bovary\" de Gustave Flaubert"
+    ],
+    "reponse": "\"Les Misérables\" de Victor Hugo",
+    "commentaire_bon": "Bravo !",
+    "commentaire_mauvais": "La bonne réponse est « Les Misérables » de Victor Hugo, paru en 1862."
+  },
+  {
+    "id": 13,
+    "code": "1493",
+    "rue": "Boulevard Marie CURIE",
+    "question": "Marie Curie est la seule femme à avoir reçu deux prix Nobel scientifiques. Dans quels domaines ?",
+    "choix": [
+      "Physique et Chimie",
+      "Physique et Météorologie",
+      "Physique et Océanographie"
+    ],
+    "reponse": "Physique et Chimie",
+    "commentaire_bon": "Bravo !",
+    "commentaire_mauvais": "Marie Curie a reçu le prix Nobel de Physique en 1903 puis le prix Nobel de Chimie en 1911."
+  },
+  {
+    "id": 14,
+    "code": "1014",
+    "rue": "Tour Eiffel",
+    "question": "Pour quel événement la Tour Eiffel a-t-elle été construite ?",
+    "choix": [
+      "La coupe du monde de football de 1998",
+      "L'exposition universelle de 1889",
+      "La révolution française de 1789"
+    ],
+    "reponse": "L'exposition universelle de 1889",
+    "commentaire_bon": "Bien joué ! L'Exposition universelle de 1889 se tient à Paris du 5 mai au 31 octobre 1889. Son thème est la Révolution française, dans le cadre du centenaire de cet événement.",
+    "commentaire_mauvais": "L'Exposition universelle de 1889 se tient à Paris du 5 mai au 31 octobre 1889. C'est à l'occasion de cette exposition que la tour Eiffel est construite. Elle mesure 300 mètres."
+  },
+  {
+    "id": 15,
+    "code": "4594",
+    "rue": "Rue Louis PASTEUR",
+    "question": "Contre quelle maladie Louis Pasteur a-t-il mis au point un vaccin ?",
+    "choix": [
+      "La grippe",
+      "Les rhumatismes",
+      "La rage"
+    ],
+    "reponse": "La rage",
+    "commentaire_bon": "Bravo ! La découverte du vaccin antirabique en 1885 vaut à Pasteur sa consécration auprès de l'Académie des sciences.",
+    "commentaire_mauvais": "La bonne réponse est la rage. La découverte du vaccin antirabique en 1885 vaut à Pasteur sa consécration auprès de l'Académie des sciences."
+  },
+  {
+    "id": 16,
+    "code": "4391",
+    "rue": "Rue Sylvain TESSON",
+    "question": "Après un tour du monde à bicyclette avec Alexandre Poussin, les deux amis tirent de leur voyage, en 1996, un livre dont le titre est… ?",
+    "choix": [
+      "On a marché sur la Lune",
+      "On a roulé sur la Terre",
+      "On a vogué sur la mer"
+    ],
+    "reponse": "On a roulé sur la Terre",
+    "commentaire_bon": "Bravo ! « On a roulé sur la Terre » est le récit de l'aventure de ces deux étudiants français partis faire le tour du monde à bicyclette en un an.",
+    "commentaire_mauvais": "La bonne réponse est « On a roulé sur la Terre », récit de l'aventure de ces deux étudiants français partis faire le tour du monde à bicyclette en un an."
+  },
+  {
+    "id": 17,
+    "code": "8941",
+    "rue": "Avenue Coco CHANEL",
+    "question": "Qui a été le célèbre directeur artistique de la maison Chanel de 1983 à 2019 ?",
+    "choix": [
+      "Karl Lagerfeld",
+      "Jean-Paul Gaultier",
+      "Yves Saint Laurent"
+    ],
+    "reponse": "Karl Lagerfeld",
+    "commentaire_bon": "Félicitations !",
+    "commentaire_mauvais": "La bonne réponse est Karl Lagerfeld."
+  },
+  {
+    "id": 18,
+    "code": "1018",
+    "rue": "Mont Saint-Michel",
+    "question": "Où se trouve le Mont Saint-Michel ?",
+    "choix": [
+      "Entre la Normandie et la Bretagne",
+      "Entre les Alpes et la Côte d'Azur",
+      "Entre Paris et Lille"
+    ],
+    "reponse": "Entre la Normandie et la Bretagne",
+    "commentaire_bon": "Bien joué !",
+    "commentaire_mauvais": "La bonne réponse est entre la Normandie et la Bretagne."
+  },
+  {
+    "id": 19,
+    "code": "1019",
+    "rue": "Chamonix",
+    "question": "Quel est le nom de la montagne qui domine Chamonix ?",
+    "choix": [
+      "Le Kilimandjaro",
+      "L'Everest",
+      "Le Mont Blanc"
+    ],
+    "reponse": "Le Mont Blanc",
+    "commentaire_bon": "Bravo ! Le mont Blanc est le point culminant de la chaîne des Alpes, avec une altitude de 4 809 mètres. Il est le plus haut sommet d'Europe occidentale.",
+    "commentaire_mauvais": "La bonne réponse est le Mont Blanc. Avec une altitude de 4 809 mètres, il est le plus haut sommet d'Europe occidentale."
+  },
+  {
+    "id": 20,
+    "code": "3841",
+    "rue": "Rue Jules VERNE",
+    "question": "Lequel de ces romans n'a PAS été écrit par Jules Verne ?",
+    "choix": [
+      "Le Tour du monde en quatre-vingts jours",
+      "Vingt mille lieues sous les mers",
+      "Les Trois Mousquetaires"
+    ],
+    "reponse": "Les Trois Mousquetaires",
+    "commentaire_bon": "Bravo ! Alexandre Dumas a écrit « Les Trois Mousquetaires », publié en 1844.",
+    "commentaire_mauvais": "La bonne réponse est « Les Trois Mousquetaires ». Jules Verne a écrit « Le Tour du monde en 80 jours » et « Vingt mille lieues sous les mers ». C'est Alexandre Dumas qui a écrit « Les Trois Mousquetaires »."
+  },
+  {
+    "id": 21,
+    "code": "5382",
+    "rue": "Rue Sylvie GUILLEM",
+    "question": "Sylvie Guillem est étoile du Ballet de l'Opéra national de Paris et… ?",
+    "choix": [
+      "Étoile du Théâtre Mariinsky de Saint-Pétersbourg",
+      "Étoile du Royal Ballet de Londres",
+      "Étoile de la Scala de Milan"
+    ],
+    "reponse": "Étoile du Royal Ballet de Londres",
+    "commentaire_bon": "Bravo !",
+    "commentaire_mauvais": "Sylvie Guillem est étoile du Ballet de l'Opéra national de Paris et étoile du Royal Ballet de Londres."
+  },
+  {
+    "id": 22,
+    "code": "1022",
+    "rue": "Marianne / Eugène Delacroix",
+    "question": "Quel peintre fait apparaître Marianne, en 1830, sur une toile appelée « La Liberté guidant le peuple » ?",
+    "choix": [
+      "Eugène Delacroix",
+      "Henri Matisse",
+      "Paul Cézanne"
+    ],
+    "reponse": "Eugène Delacroix",
+    "commentaire_bon": "Quelle culture !",
+    "commentaire_mauvais": "La bonne réponse est Eugène Delacroix."
+  },
+  {
+    "id": 23,
+    "code": "3619",
+    "rue": "Rue Omar SY",
+    "question": "Quel est le nom de l'acteur français qui partage l'affiche du film « Intouchables » avec Omar Sy ?",
+    "choix": [
+      "Jean Dujardin",
+      "Dany Boon",
+      "François Cluzet"
+    ],
+    "reponse": "François Cluzet",
+    "commentaire_bon": "Bravo ! « Intouchables », sorti en 2011, est le troisième plus gros succès du cinéma français avec 19,5 millions de spectateurs.",
+    "commentaire_mauvais": "La bonne réponse est François Cluzet. « Intouchables », sorti en 2011, est le troisième plus gros succès du cinéma français avec 19,5 millions de spectateurs."
+  },
+  {
+    "id": 24,
+    "code": "1024",
+    "rue": "Le Petit Prince",
+    "question": "Qui est l'auteur du Petit Prince ?",
+    "choix": [
+      "Pierre Corneille",
+      "Antoine de Saint-Exupéry",
+      "Charles Baudelaire"
+    ],
+    "reponse": "Antoine de Saint-Exupéry",
+    "commentaire_bon": "Félicitations ! Antoine de Saint-Exupéry, né le 29 juin 1900 à Lyon, est un écrivain, poète, aviateur et reporter français.",
+    "commentaire_mauvais": "La bonne réponse est Antoine de Saint-Exupéry, né le 29 juin 1900 à Lyon. Il est écrivain, poète, aviateur et reporter français."
+  },
+  {
+    "id": 25,
+    "code": "7364",
+    "rue": "Rue Berthe MORISOT",
+    "question": "Durant quel siècle l'artiste peintre Berthe Morisot a-t-elle participé au mouvement impressionniste ?",
+    "choix": [
+      "13e siècle",
+      "17e siècle",
+      "19e siècle"
+    ],
+    "reponse": "19e siècle",
+    "commentaire_bon": "Bravo ! Berthe Morisot a développé le mouvement impressionniste avec Édouard Manet, Edgar Degas, Pierre-Auguste Renoir et Claude Monet au cours du 19e siècle.",
+    "commentaire_mauvais": "Berthe Morisot a vécu au 19e siècle, durant lequel elle a développé le mouvement impressionniste avec Édouard Manet, Edgar Degas, Pierre-Auguste Renoir et Claude Monet."
+  },
+  {
+    "id": 26,
+    "code": "5942",
+    "rue": "Rue Marguerite DURAS",
+    "question": "Dans quel pays Marguerite Duras a-t-elle passé son enfance ?",
+    "choix": [
+      "Le Vietnam",
+      "Le Chili",
+      "L'Égypte"
+    ],
+    "reponse": "Le Vietnam",
+    "commentaire_bon": "Bravo ! Marguerite Duras est née le 4 avril 1914 à Gia Dinh, une ville de la banlieue de Saïgon. Elle est l'auteure de « L'Amant », « Hiroshima mon Amour »...",
+    "commentaire_mauvais": "La bonne réponse est le Vietnam. Marguerite Duras est née le 4 avril 1914 à Gia Dinh, une ville de la banlieue de Saïgon. Elle est l'auteure de « L'Amant », « Hiroshima mon Amour »..."
+  },
+  {
+    "id": 27,
+    "code": "8397",
+    "rue": "Rue Robert DOISNEAU",
+    "question": "Quel est, dans l'une de ses célèbres photographies, le bâtiment devant lequel des amoureux s'embrassent en plein Paris ?",
+    "choix": [
+      "L'Arc de Triomphe",
+      "La Tour Eiffel",
+      "L'Hôtel de Ville"
+    ],
+    "reponse": "L'Hôtel de Ville",
+    "commentaire_bon": "Félicitations ! Robert Doisneau est un photographe français, parmi les plus populaires après-guerre.",
+    "commentaire_mauvais": "La bonne réponse est l'Hôtel de Ville. Robert Doisneau est un photographe français, parmi les plus populaires après-guerre."
+  },
+  {
+    "id": 28,
+    "code": "7194",
+    "rue": "Avenue Simone de BEAUVOIR",
+    "question": "La philosophe Simone de Beauvoir participe au développement d'un profond mouvement social au XXe siècle. Lequel ?",
+    "choix": [
+      "Le consumérisme",
+      "Le libéralisme",
+      "Le féminisme"
+    ],
+    "reponse": "Le féminisme",
+    "commentaire_bon": "Bravo ! Simone de Beauvoir obtient la notoriété en publiant en 1949 « Le Deuxième Sexe », qui devient la référence du féminisme moderne.",
+    "commentaire_mauvais": "La bonne réponse est le féminisme. Simone de Beauvoir publie en 1949 « Le Deuxième Sexe », qui devient la référence du féminisme moderne."
+  },
+  {
+    "id": 29,
+    "code": "9462",
+    "rue": "Rue Claude DEBUSSY",
+    "question": "Pour quel instrument Debussy a-t-il principalement composé ?",
+    "choix": [
+      "Le piano",
+      "Le violon",
+      "La batterie"
+    ],
+    "reponse": "Le piano",
+    "commentaire_bon": "Félicitations ! Une part importante de son œuvre est pour piano (la plus vaste de la musique française avec celle de Gabriel Fauré).",
+    "commentaire_mauvais": "La bonne réponse est le piano. Une part importante de son œuvre est pour piano (la plus vaste de la musique française avec celle de Gabriel Fauré)."
+  },
+  {
+    "id": 30,
+    "code": "3942",
+    "rue": "Rue Guillaume APOLLINAIRE",
+    "question": "Quel fleuve coule sous le pont Mirabeau ?",
+    "choix": [
+      "Le Nil",
+      "La Tamise",
+      "La Seine"
+    ],
+    "reponse": "La Seine",
+    "commentaire_bon": "Bravo ! Considéré comme l'un des poètes français les plus importants du début du XXe siècle, Guillaume Apollinaire a inventé le terme « calligramme ».",
+    "commentaire_mauvais": "La bonne réponse est « La Seine » qui traverse Paris. Guillaume Apollinaire est considéré comme l'un des poètes français les plus importants du début du XXe siècle."
+  }
+]
