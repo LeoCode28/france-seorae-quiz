@@ -645,15 +645,23 @@ def sync_plaque_coords():
     new_coords = {}
     unmatched = []
 
+    new_media = {}
     for pm in placemarks:
         code = _match_kml_name_to_question(pm['name'], questions)
         if code:
             new_coords[code] = {'lat': pm['lat'], 'lng': pm['lng']}
+            if pm['images'] or pm['videos']:
+                new_media[code] = {
+                    'images': pm['images'],
+                    'videos': pm['videos'],
+                }
         else:
             unmatched.append(pm['name'])
 
     if new_coords:
         PLAQUE_COORDS.update(new_coords)
+    if new_media:
+        PLAQUE_MEDIA.update(new_media)
 
     if unmatched:
         print(f'[sync] ⚠️  Non matchés : {", ".join(unmatched)}')
