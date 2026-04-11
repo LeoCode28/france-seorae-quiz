@@ -1,6 +1,94 @@
 {% extends "base.html" %}
 {% block score_header %}{{ score }} {{ t('score_pts') }}{% endblock %}
 
+{% block extra_head %}
+<style>
+  /* ── Rolling video carousel ── */
+  .video-section { margin-top: 18px; }
+  .video-section-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--bleu);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .video-section-hint {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--gris);
+    text-transform: none;
+    letter-spacing: 0;
+    margin-left: auto;
+  }
+  .video-carousel {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 2px 10px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bleu) transparent;
+  }
+  .video-carousel::-webkit-scrollbar { height: 6px; }
+  .video-carousel::-webkit-scrollbar-track { background: transparent; }
+  .video-carousel::-webkit-scrollbar-thumb {
+    background: var(--bleu);
+    border-radius: 3px;
+    opacity: 0.5;
+  }
+  .video-slide {
+    flex: 0 0 260px;
+    scroll-snap-align: center;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    cursor: pointer;
+    background: #000;
+  }
+  .video-slide img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .video-slide .play-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.22);
+    transition: background 0.2s;
+  }
+  .video-slide:hover .play-overlay { background: rgba(0,0,0,0.38); }
+  .video-slide .play-btn {
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  }
+  .video-slide .play-btn::after {
+    content: '';
+    display: block;
+    border-style: solid;
+    border-width: 9px 0 9px 14px;
+    border-color: transparent transparent transparent #002395;
+    margin-left: 3px;
+  }
+  .video-slide iframe {
+    width: 100%; height: 100%;
+    border: 0;
+    display: block;
+  }
+  @media (max-width: 480px) {
+    .video-slide { flex-basis: 240px; }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 
 {% if deja_repondu %}
@@ -50,6 +138,45 @@
     </ul>
   </form>
 </div>
+
+{% if media_videos %}
+<div class="video-section">
+  <div class="video-section-title">
+    {{ t('question_videos') }}
+    {% if media_videos|length > 1 %}
+    <span class="video-section-hint">← {{ t('question_video_hint') }} →</span>
+    {% endif %}
+  </div>
+  <div class="video-carousel">
+    {% for vid in media_videos %}
+    <div class="video-slide" data-vid="{{ vid }}" role="button" tabindex="0" aria-label="Play video">
+      <img src="https://img.youtube.com/vi/{{ vid }}/hqdefault.jpg" alt="" loading="lazy" />
+      <div class="play-overlay"><div class="play-btn"></div></div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<script>
+  (function() {
+    function activate(slide) {
+      var vid = slide.getAttribute('data-vid');
+      if (!vid || slide.dataset.loaded === '1') return;
+      slide.dataset.loaded = '1';
+      slide.innerHTML = '<iframe src="https://www.youtube.com/embed/' + encodeURIComponent(vid) +
+        '?autoplay=1&rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    }
+    document.querySelectorAll('.video-slide').forEach(function(slide) {
+      slide.addEventListener('click', function() { activate(slide); });
+      slide.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activate(slide);
+        }
+      });
+    });
+  })();
+</script>
+{% endif %}
 
 <div style="margin-top:12px;">
   <a href="/carte" class="btn btn-secondary">{{ t('back_map') }}</a>
