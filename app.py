@@ -601,22 +601,56 @@ def sync_plaque_coords():
         )
         if name_match and coords_match:
             # Extract media links (images + YouTube videos)
+            # Google My Maps stores uploaded photos in <ExtendedData> gx_media_links,
+            # but YouTube videos are embedded in <description> as HTML iframes/links.
+            # We therefore scan BOTH sources.
             images = []
             videos = []
+            seen_imgs = set()
+            seen_vids = set()
+
+            # 1) gx_media_links → space-separated list of uploaded photo URLs
+            media_links_raw = ''
             media_match = re.search(
-                r'gx_media_links.*?<value><!\[CDATA\[(.*?)\]\]></value>',
+                r'gx_media_links.*?<value>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</value>',
                 block, re.DOTALL
             )
             if media_match:
-                for link in media_match.group(1).strip().split(' '):
-                    link = link.strip()
-                    if not link:
-                        continue
-                    if 'youtube.com/embed/' in link:
-                        vid_id = link.split('youtube.com/embed/')[-1].split('?')[0]
-                        videos.append(vid_id)
-                    elif link.startswith('http') and 'youtube' not in link:
+                media_links_raw = media_match.group(1).strip()
+
+            # 2) <description> → may contain <img>, <iframe>, or plain YouTube links
+            desc_match = re.search(
+                r'<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</description>',
+                block, re.DOTALL
+            )
+            description_html = desc_match.group(1) if desc_match else ''
+
+            haystack = media_links_raw + ' ' + description_html
+
+            # Find every YouTube video ID, whatever the URL form
+            youtube_re = re.compile(
+                r'(?:youtube(?:-nocookie)?\.com/(?:embed/|watch\?v=|v/)'
+                r'|youtu\.be/)([A-Za-z0-9_-]{11})'
+            )
+            for vid_id in youtube_re.findall(haystack):
+                if vid_id not in seen_vids:
+                    seen_vids.add(vid_id)
+                    videos.append(vid_id)
+
+            # Collect image URLs from gx_media_links (space-separated)
+            for link in media_links_raw.split():
+                link = link.strip()
+                if link.startswith('http') and 'youtube' not in link and 'youtu.be' not in link:
+                    if link not in seen_imgs:
+                        seen_imgs.add(link)
                         images.append(link)
+
+            # Also catch <img src="..."> inside the description
+            for m in re.finditer(r'<img[^>]+src=["\']([^"\']+)["\']', description_html):
+                link = m.group(1)
+                if link.startswith('http') and link not in seen_imgs:
+                    seen_imgs.add(link)
+                    images.append(link)
 
             placemarks.append({
                 'name': name_match.group(1).strip(),
