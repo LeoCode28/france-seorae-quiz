@@ -23,17 +23,6 @@
   .media-gallery img:first-child:nth-last-child(1) {
     grid-column: 1 / -1;
   }
-  .video-wrap {
-    position: relative; padding-bottom: 56.25%;
-    height: 0; overflow: hidden; border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-    margin-bottom: 10px;
-  }
-  .video-wrap iframe {
-    position: absolute; top: 0; left: 0;
-    width: 100%; height: 100%; border: none;
-    border-radius: 12px;
-  }
   /* Lightbox */
   .lightbox {
     display: none; position: fixed; inset: 0;
@@ -68,31 +57,16 @@
 </div>
 {% endif %}
 
-<!-- Media from Google My Maps -->
-{% if media_images or media_videos %}
+<!-- Photos from Google My Maps (videos are shown on the question page) -->
+{% if media_images %}
 <div class="card media-section" style="border-top-color: var(--or);">
   <h3>📸 {{ t('result_discover') }}</h3>
 
-  {% if media_images %}
   <div class="media-gallery">
     {% for img in media_images %}
     <img src="{{ img }}" alt="{{ q.rue }}" loading="lazy" onclick="openLightbox(this.src)" />
     {% endfor %}
   </div>
-  {% endif %}
-
-  {% if media_videos %}
-  {% for vid in media_videos %}
-  <div class="video-wrap">
-    <iframe
-      src="https://www.youtube.com/embed/{{ vid }}"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-      loading="lazy"
-    ></iframe>
-  </div>
-  {% endfor %}
-  {% endif %}
 </div>
 {% endif %}
 
