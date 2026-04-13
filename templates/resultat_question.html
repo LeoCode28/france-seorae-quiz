@@ -1,46 +1,6 @@
 {% extends "base.html" %}
 {% block score_header %}{{ score }} {{ t('score_pts') }} · {{ nb_repondu }}/{{ total }}{% endblock %}
 
-{% block extra_head %}
-<style>
-  .media-section { margin-top: 18px; }
-  .media-section h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem; color: var(--bleu);
-    margin-bottom: 12px;
-  }
-  .media-gallery {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 10px; margin-bottom: 14px;
-  }
-  .media-gallery img {
-    width: 100%; border-radius: 12px;
-    object-fit: cover; aspect-ratio: 4/3;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-    cursor: pointer; transition: transform 0.2s;
-  }
-  .media-gallery img:hover { transform: scale(1.03); }
-  .media-gallery img:first-child:nth-last-child(1) {
-    grid-column: 1 / -1;
-  }
-  /* Lightbox */
-  .lightbox {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.85); z-index: 9999;
-    align-items: center; justify-content: center;
-    padding: 20px; cursor: pointer;
-  }
-  .lightbox.open { display: flex; }
-  .lightbox img {
-    max-width: 95%; max-height: 90vh;
-    border-radius: 12px; object-fit: contain;
-  }
-  @media (max-width: 480px) {
-    .media-gallery { grid-template-columns: 1fr; }
-  }
-</style>
-{% endblock %}
-
 {% block content %}
 
 {% if bonne %}
@@ -54,19 +14,6 @@
   <div class="result-icon">😕</div>
   <div class="result-titre" style="color:#DC2626;">{{ t('result_bad') }}</div>
   <div class="result-commentaire">{{ commentaire }}</div>
-</div>
-{% endif %}
-
-<!-- Photos from Google My Maps (videos are shown on the question page) -->
-{% if media_images %}
-<div class="card media-section" style="border-top-color: var(--or);">
-  <h3>📸 {{ t('result_discover') }}</h3>
-
-  <div class="media-gallery">
-    {% for img in media_images %}
-    <img src="{{ img }}" alt="{{ q.rue }}" loading="lazy" onclick="openLightbox(this.src)" />
-    {% endfor %}
-  </div>
 </div>
 {% endif %}
 
@@ -89,20 +36,5 @@
 <div style="margin-top:12px;">
   <a href="/enregistrer" class="btn btn-or">{{ t('result_finish') }}</a>
 </div>
-
-<!-- Lightbox -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <img id="lightbox-img" src="" alt="" />
-</div>
-
-<script>
-function openLightbox(src) {
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-}
-</script>
 
 {% endblock %}
