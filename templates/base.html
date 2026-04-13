@@ -7,6 +7,8 @@
   <link rel="icon" type="image/png" href="/static/lfs-logo-white-transparent.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Prevent flash of wrong theme -->
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
   <style>
     :root {
       --bleu:  #002395;
@@ -16,9 +18,38 @@
       --or:    #C8A84B;
       --gris:  #6B7280;
       --ombre: rgba(0,35,149,0.12);
+      --bg-surface:     #F9FAFB;
+      --border-light:   #E5E7EB;
+      --text-primary:   #1a1a2e;
+      --text-secondary: #374151;
+      --hover-light:    #EEF1FF;
     }
+
+    /* ── DARK THEME ── */
+    [data-theme="dark"] {
+      --bleu:  #4A7BF7;
+      --rouge: #FF5A6A;
+      --blanc: #1E1E2E;
+      --creme: #121220;
+      --or:    #D4B85A;
+      --gris:  #9CA3AF;
+      --ombre: rgba(0,0,0,0.35);
+      --bg-surface:     #1a1a2e;
+      --border-light:   #374151;
+      --text-primary:   #E5E7EB;
+      --text-secondary: #D1D5DB;
+      --hover-light:    #2a2a3e;
+    }
+    [data-theme="dark"] header { background: #0D1533; }
+    [data-theme="dark"] .result-bon { background: #0F2A1A; border-color: #15803D; }
+    [data-theme="dark"] .result-mauvais { background: #2A0F0F; border-color: #7F1D1D; }
+    [data-theme="dark"] .alerte { background: #2A0F0F; border-color: #7F1D1D; }
+    [data-theme="dark"] .btn-primary:hover { background: #3565D4; }
+    [data-theme="dark"] .btn-secondary { background: var(--blanc); }
+    [data-theme="dark"] .alerte-warning { background: #2A2A0F; border-color: #6B6B1D; color: #D4D06A; }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--creme); min-height: 100vh; color: #1a1a2e; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--creme); min-height: 100vh; color: var(--text-primary); }
 
     /* ── HEADER ── */
     header {
@@ -47,31 +78,31 @@
       box-shadow: 0 1px 4px rgba(0,0,0,0.3); flex-shrink: 0;
     }
     .tricolore div { width: 10px; }
-    .tricolore .b { background: var(--bleu); }
-    .tricolore .w { background: var(--blanc); }
-    .tricolore .r { background: var(--rouge); }
+    .tricolore .b { background: #002395; }
+    .tricolore .w { background: #FFFFFF; }
+    .tricolore .r { background: #ED2939; }
     .logo-text {
       font-family: 'Playfair Display', serif;
       font-size: 1.15rem; font-weight: 700;
       white-space: nowrap;
-      color: var(--blanc);
+      color: #FFFFFF;
     }
 
     .header-right { display: flex; align-items: center; gap: 8px; }
 
     .score-badge {
-      background: rgba(255,255,255,0.15); color: var(--blanc);
+      background: rgba(255,255,255,0.15); color: #FFFFFF;
       padding: 5px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600;
       border: 1px solid rgba(255,255,255,0.25);
       white-space: nowrap; flex-shrink: 0;
     }
 
-    /* ── LANG DROPDOWN ── */
-    .lang-dropdown { position: relative; flex-shrink: 0; }
-    .lang-toggle {
+    /* ── DROPDOWNS (lang + theme) ── */
+    .header-dropdown { position: relative; flex-shrink: 0; }
+    .header-toggle {
       background: rgba(255,255,255,0.15);
       border: 1px solid rgba(255,255,255,0.3);
-      color: var(--blanc);
+      color: #FFFFFF;
       padding: 5px 12px; border-radius: 8px;
       font-size: 0.82rem; font-weight: 600;
       cursor: pointer; font-family: 'DM Sans', sans-serif;
@@ -79,31 +110,32 @@
       transition: background 0.15s;
       white-space: nowrap;
     }
-    .lang-toggle:hover { background: rgba(255,255,255,0.25); }
-    .lang-toggle .arrow { font-size: 0.6rem; transition: transform 0.2s; }
-    .lang-dropdown.open .arrow { transform: rotate(180deg); }
-    .lang-menu {
+    .header-toggle:hover { background: rgba(255,255,255,0.25); }
+    .header-toggle .arrow { font-size: 0.6rem; transition: transform 0.2s; }
+    .header-dropdown.open .arrow { transform: rotate(180deg); }
+    .dropdown-menu {
       display: none;
       position: absolute; top: calc(100% + 6px); right: 0;
       background: var(--blanc);
       border-radius: 10px;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.15);
-      overflow: hidden; min-width: 150px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+      overflow: hidden; min-width: 140px;
       z-index: 200;
     }
-    .lang-dropdown.open .lang-menu { display: block; }
-    .lang-option {
+    .header-dropdown.open .dropdown-menu { display: block; }
+    .dropdown-option {
       display: flex; align-items: center; gap: 8px;
       padding: 10px 16px;
-      color: #374151; text-decoration: none;
+      color: var(--text-secondary); text-decoration: none;
       font-size: 0.9rem; font-weight: 500;
       transition: background 0.12s;
+      cursor: pointer;
     }
-    .lang-option:hover { background: #F3F4F6; }
-    .lang-option.active {
-      background: #EEF1FF; color: var(--bleu); font-weight: 700;
+    .dropdown-option:hover { background: var(--hover-light); }
+    .dropdown-option.active {
+      background: var(--hover-light); color: var(--bleu); font-weight: 700;
     }
-    .lang-option .check { margin-left: auto; font-size: 0.8rem; }
+    .dropdown-option .check { margin-left: auto; font-size: 0.8rem; }
 
     /* ── MAIN ── */
     main { max-width: 680px; margin: 0 auto; padding: 28px 16px 80px; }
@@ -130,9 +162,10 @@
     .form-group { margin-bottom: 18px; }
     label { display: block; font-weight: 600; font-size: 0.83rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--bleu); margin-bottom: 7px; }
     input[type="text"], input[type="email"], input[type="number"] {
-      width: 100%; padding: 13px 16px; border: 2px solid #E5E7EB; border-radius: 12px;
+      width: 100%; padding: 13px 16px; border: 2px solid var(--border-light); border-radius: 12px;
       font-size: 1rem; font-family: 'DM Sans', sans-serif;
-      transition: border-color 0.2s, box-shadow 0.2s; background: #FAFAFA;
+      transition: border-color 0.2s, box-shadow 0.2s; background: var(--bg-surface);
+      color: var(--text-primary);
     }
     input:focus { outline: none; border-color: var(--bleu); box-shadow: 0 0 0 4px rgba(0,35,149,0.08); background: var(--blanc); }
 
@@ -143,20 +176,21 @@
       font-family: 'DM Sans', sans-serif; cursor: pointer; border: none;
       transition: all 0.2s; text-decoration: none;
     }
-    .btn-primary { background: var(--bleu); color: var(--blanc); width: 100%; }
+    .btn-primary { background: var(--bleu); color: #FFFFFF; width: 100%; }
     .btn-primary:hover { background: #001a6e; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,35,149,0.3); }
     .btn-secondary { background: var(--creme); color: var(--bleu); border: 2px solid var(--bleu); width: 100%; }
-    .btn-secondary:hover { background: var(--bleu); color: var(--blanc); }
-    .btn-rouge { background: var(--rouge); color: var(--blanc); width: 100%; }
+    .btn-secondary:hover { background: var(--bleu); color: #FFFFFF; }
+    .btn-rouge { background: var(--rouge); color: #FFFFFF; width: 100%; }
     .btn-rouge:hover { background: #c0202f; transform: translateY(-1px); }
-    .btn-or { background: var(--or); color: var(--blanc); width: 100%; }
+    .btn-or { background: var(--or); color: #FFFFFF; width: 100%; }
     .btn-or:hover { background: #b8943f; transform: translateY(-1px); }
 
     /* ── ERREUR ── */
     .alerte { background: #FEF2F2; border: 2px solid #FECACA; color: #DC2626; padding: 11px 15px; border-radius: 10px; font-size: 0.93rem; margin-bottom: 18px; }
+    .alerte-warning { background: #FEF9C3; border: 2px solid #FDE047; color: #854D0E; padding: 11px 15px; border-radius: 10px; font-size: 0.93rem; margin-bottom: 18px; }
 
     /* ── PROGRESS ── */
-    .progress-bar { background: #E5E7EB; border-radius: 999px; height: 10px; overflow: hidden; margin-bottom: 7px; }
+    .progress-bar { background: var(--border-light); border-radius: 999px; height: 10px; overflow: hidden; margin-bottom: 7px; }
     .progress-fill { height: 100%; background: linear-gradient(90deg, var(--bleu), var(--rouge)); border-radius: 999px; transition: width 0.5s ease; }
     .progress-label { font-size: 0.79rem; color: var(--gris); text-align: right; }
 
@@ -169,24 +203,24 @@
     .choix-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
     .choix-item { display: flex; align-items: center; }
     .choix-btn {
-      width: 100%; padding: 15px 18px; background: #F9FAFB; border: 2px solid #E5E7EB;
+      width: 100%; padding: 15px 18px; background: var(--bg-surface); border: 2px solid var(--border-light);
       border-radius: 12px; font-size: 0.97rem; font-family: 'DM Sans', sans-serif;
-      cursor: pointer; text-align: left; transition: all 0.18s; font-weight: 500; color: #1a1a2e;
+      cursor: pointer; text-align: left; transition: all 0.18s; font-weight: 500; color: var(--text-primary);
     }
-    .choix-btn:hover { border-color: var(--bleu); background: #EEF1FF; color: var(--bleu); }
-    .choix-btn.selected { border-color: var(--bleu); background: var(--bleu); color: var(--blanc); }
+    .choix-btn:hover { border-color: var(--bleu); background: var(--hover-light); color: var(--bleu); }
+    .choix-btn.selected { border-color: var(--bleu); background: var(--bleu); color: #FFFFFF; }
 
     /* ── RESULT BOX ── */
     .result-bon { background: #F0FDF4; border: 2px solid #86EFAC; border-radius: 14px; padding: 18px 22px; }
     .result-mauvais { background: #FEF2F2; border: 2px solid #FECACA; border-radius: 14px; padding: 18px 22px; }
     .result-icon { font-size: 2.4rem; margin-bottom: 7px; }
     .result-titre { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 9px; }
-    .result-commentaire { font-size: 0.93rem; line-height: 1.6; color: #374151; }
+    .result-commentaire { font-size: 0.93rem; line-height: 1.6; color: var(--text-secondary); }
 
     /* ── SCORE FINAL ── */
     .score-cercle {
       width: 138px; height: 138px; border-radius: 50%;
-      background: var(--bleu); color: var(--blanc);
+      background: var(--bleu); color: #FFFFFF;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       margin: 0 auto 22px; box-shadow: 0 8px 32px rgba(0,35,149,0.3);
     }
@@ -197,7 +231,7 @@
     .code-input { font-size: 2rem !important; text-align: center; letter-spacing: 0.3em; font-weight: 700; color: var(--bleu); }
 
     /* ── TAG rue ── */
-    .rue-tag { display: inline-flex; align-items: center; gap: 6px; background: #EEF1FF; color: var(--bleu); padding: 5px 13px; border-radius: 20px; font-size: 0.83rem; font-weight: 600; margin-bottom: 14px; }
+    .rue-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--hover-light); color: var(--bleu); padding: 5px 13px; border-radius: 20px; font-size: 0.83rem; font-weight: 600; margin-bottom: 14px; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
@@ -211,6 +245,7 @@
       .tricolore div { width: 7px; }
       .logo-text { font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; }
       .score-badge { padding: 4px 10px; font-size: 0.75rem; }
+      .header-toggle { padding: 5px 8px; font-size: 0.75rem; }
     }
     @media (max-width: 400px) {
       .tricolore { display: none; }
@@ -230,15 +265,33 @@
       {% if self.score_header() %}
       <div class="score-badge">{% block score_header %}{% endblock %}</div>
       {% endif %}
-      <div class="lang-dropdown" id="langDropdown">
-        <button class="lang-toggle" onclick="toggleLang()" type="button">
+
+      <!-- Theme toggle -->
+      <div class="header-dropdown" id="themeDropdown">
+        <button class="header-toggle" onclick="toggleDropdown('themeDropdown')" type="button">
+          <span id="themeIcon">☀️</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-option" data-theme="light" onclick="setTheme('light');return false;">
+            ☀️ Light <span class="check" style="display:none">✓</span>
+          </a>
+          <a href="#" class="dropdown-option" data-theme="dark" onclick="setTheme('dark');return false;">
+            🌙 Dark <span class="check" style="display:none">✓</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Language selector -->
+      <div class="header-dropdown" id="langDropdown">
+        <button class="header-toggle" onclick="toggleDropdown('langDropdown')" type="button">
           {{ translations[current_lang]['lang_flag'] }} {{ translations[current_lang]['lang_name'] }}
           <span class="arrow">▼</span>
         </button>
-        <div class="lang-menu">
+        <div class="dropdown-menu">
           {% for lang_code in supported_langs %}
           <a href="{{ url_for('set_lang', lang=lang_code, next=request.path) }}"
-             class="lang-option {{ 'active' if current_lang == lang_code else '' }}">
+             class="dropdown-option {{ 'active' if current_lang == lang_code else '' }}">
             {{ translations[lang_code]['lang_flag'] }} {{ translations[lang_code]['lang_name'] }}
             {% if current_lang == lang_code %}<span class="check">✓</span>{% endif %}
           </a>
@@ -253,13 +306,36 @@
   </main>
 
   <script>
-    function toggleLang() {
-      document.getElementById('langDropdown').classList.toggle('open');
+    /* ── Dropdowns ── */
+    function toggleDropdown(id) {
+      var target = document.getElementById(id);
+      document.querySelectorAll('.header-dropdown').forEach(function(dd) {
+        if (dd.id !== id) dd.classList.remove('open');
+      });
+      target.classList.toggle('open');
     }
     document.addEventListener('click', function(e) {
-      var dd = document.getElementById('langDropdown');
-      if (!dd.contains(e.target)) dd.classList.remove('open');
+      document.querySelectorAll('.header-dropdown').forEach(function(dd) {
+        if (!dd.contains(e.target)) dd.classList.remove('open');
+      });
     });
+
+    /* ── Theme ── */
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      updateThemeUI(theme);
+      document.getElementById('themeDropdown').classList.remove('open');
+    }
+    function updateThemeUI(theme) {
+      document.getElementById('themeIcon').textContent = theme === 'dark' ? '🌙' : '☀️';
+      document.querySelectorAll('#themeDropdown .dropdown-option').forEach(function(el) {
+        var active = el.getAttribute('data-theme') === theme;
+        el.classList.toggle('active', active);
+        el.querySelector('.check').style.display = active ? '' : 'none';
+      });
+    }
+    updateThemeUI(localStorage.getItem('theme') || 'light');
   </script>
 </body>
 </html>
