@@ -63,8 +63,7 @@ TRANSLATIONS = {
         'question_point': '+1 point',
         'question_no_answer': 'Merci de choisir une réponse !',
         'question_invalid': 'Réponse invalide.',
-        'question_videos': '🎬 Vidéos',
-        'question_video_hint': 'Fais glisser pour voir plus',
+        'question_media': '📸 Photos & Vidéos',
         'result_good': 'Bonne réponse !',
         'result_bad': 'Pas tout à fait…',
         'result_score': 'Ton score',
@@ -151,8 +150,7 @@ TRANSLATIONS = {
         'question_point': '+1 point',
         'question_no_answer': 'Please choose an answer!',
         'question_invalid': 'Invalid answer.',
-        'question_videos': '🎬 Videos',
-        'question_video_hint': 'Swipe to see more',
+        'question_media': '📸 Photos & Videos',
         'result_good': 'Correct!',
         'result_bad': 'Not quite…',
         'result_score': 'Your score',
@@ -239,8 +237,7 @@ TRANSLATIONS = {
         'question_point': '+1 점',
         'question_no_answer': '답을 선택해주세요!',
         'question_invalid': '잘못된 답변입니다.',
-        'question_videos': '🎬 영상',
-        'question_video_hint': '옆으로 밀어서 더 보기',
+        'question_media': '📸 사진 & 영상',
         'result_good': '정답입니다!',
         'result_bad': '아쉽습니다…',
         'result_score': '현재 점수',
@@ -794,11 +791,13 @@ def question():
                                    score=session['score'],
                                    code_prefill='')
         deja_repondu = q.id in session['reponses_ids']
+        media = PLAQUE_MEDIA.get(q.code, {})
         return render_template('question.html',
                                q=q.to_dict(lang),
                                deja_repondu=deja_repondu,
                                score=session['score'],
-                               media_videos=PLAQUE_MEDIA.get(q.code, {}).get('videos', []))
+                               media_videos=media.get('videos', []),
+                               media_images=media.get('images', []))
 
     code_prefill = request.args.get('code', '')
     # If code provided via GET (from map marker), load question directly
@@ -811,11 +810,13 @@ def question():
         q = Question.query.filter_by(code=code, active=True).first()
         if q:
             deja_repondu = q.id in session['reponses_ids']
+            media = PLAQUE_MEDIA.get(q.code, {})
             return render_template('question.html',
                                    q=q.to_dict(lang),
                                    deja_repondu=deja_repondu,
                                    score=session['score'],
-                                   media_videos=PLAQUE_MEDIA.get(q.code, {}).get('videos', []))
+                                   media_videos=media.get('videos', []),
+                                   media_images=media.get('images', []))
 
     return render_template('saisie_code.html', score=session['score'], code_prefill=code_prefill)
 
@@ -838,19 +839,23 @@ def repondre():
 
     q = q_obj.to_dict(lang)
 
+    media = PLAQUE_MEDIA.get(q_obj.code, {})
+
     if not reponse_donnee:
         return render_template('question.html',
                                q=q, deja_repondu=False,
                                score=session['score'],
                                erreur=t('question_no_answer'),
-                               media_videos=PLAQUE_MEDIA.get(q_obj.code, {}).get('videos', []))
+                               media_videos=media.get('videos', []),
+                               media_images=media.get('images', []))
 
     if reponse_donnee not in q['choix']:
         return render_template('question.html',
                                q=q, deja_repondu=False,
                                score=session['score'],
                                erreur=t('question_invalid'),
-                               media_videos=PLAQUE_MEDIA.get(q_obj.code, {}).get('videos', []))
+                               media_videos=media.get('videos', []),
+                               media_images=media.get('images', []))
 
     bonne        = (reponse_donnee == q['reponse'])
     reponses_ids = list(session['reponses_ids'])
@@ -867,14 +872,11 @@ def repondre():
             session['score'] += 1
 
     commentaire = q['commentaire_bon'] if bonne else q['commentaire_mauvais']
-    # Get images from KML sync (videos are now shown on the question page itself)
-    media = PLAQUE_MEDIA.get(q_obj.code, {})
     return render_template('resultat_question.html',
                            bonne=bonne, commentaire=commentaire, q=q,
                            score=session['score'],
                            nb_repondu=len(session['reponses_ids']),
-                           total=total,
-                           media_images=media.get('images', []))
+                           total=total)
 
 
 @app.route('/enregistrer', methods=['GET', 'POST'])
