@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from dotenv import load_dotenv
 from collections import defaultdict
-import json, os, re
+import html, json, os, re
 import urllib.request
 
 load_dotenv()
@@ -628,7 +628,8 @@ def sync_plaque_coords():
             )
             description_html = desc_match.group(1) if desc_match else ''
 
-            haystack = media_links_raw + ' ' + description_html
+            # Unescape HTML entities (e.g. &amp; → &) in both sources
+            haystack = html.unescape(media_links_raw + ' ' + description_html)
 
             # Find every YouTube video ID, whatever the URL form
             youtube_re = re.compile(
@@ -641,17 +642,18 @@ def sync_plaque_coords():
                     videos.append(vid_id)
 
             # Collect image URLs from gx_media_links (space-separated)
-            for link in media_links_raw.split():
+            for link in html.unescape(media_links_raw).split():
                 link = link.strip()
                 if link.startswith('http') and 'youtube' not in link and 'youtu.be' not in link:
                     if link not in seen_imgs:
                         seen_imgs.add(link)
                         images.append(link)
 
-            # Also catch <img src="..."> inside the description
-            for m in re.finditer(r'<img[^>]+src=["\']([^"\']+)["\']', description_html):
+            # Also catch <img src="..."> and <a href="..."> in description
+            desc_unescaped = html.unescape(description_html)
+            for m in re.finditer(r'(?:src|href)=["\']([^"\']+)["\']', desc_unescaped):
                 link = m.group(1)
-                if link.startswith('http') and link not in seen_imgs:
+                if link.startswith('http') and 'youtube' not in link and 'youtu.be' not in link and link not in seen_imgs:
                     seen_imgs.add(link)
                     images.append(link)
 
@@ -699,6 +701,16 @@ def sync_plaque_coords():
         PLAQUE_COORDS.update(new_coords)
     if new_media:
         PLAQUE_MEDIA.update(new_media)
+
+    # Log media details for debugging
+    for code, m in new_media.items():
+        imgs = m.get('images', [])
+        vids = m.get('videos', [])
+        print(f'[sync] 🖼️  code={code}: {len(imgs)} image(s), {len(vids)} video(s)')
+        for url in imgs:
+            print(f'[sync]      img: {url[:120]}')
+        for vid in vids:
+            print(f'[sync]      vid: {vid}')
 
     if unmatched:
         print(f'[sync] ⚠️  Non matchés : {", ".join(unmatched)}')
