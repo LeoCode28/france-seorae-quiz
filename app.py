@@ -277,7 +277,7 @@ TRANSLATIONS = {
         'err_404_msg': '이 페이지는 존재하지 않습니다. 서래마을에서 길을 잃으셨나요!',
         'err_500_title': '서버 오류',
         'err_500_msg': '예기치 않은 오류가 발생했습니다. 잠시 후 다시 시도해주세요!',
-        'welcome_title': 'Quiz France Seorae에 오신 것을 환영합니다!',
+        'welcome_title': 'Quiz France Seorae에 오신 걸 환영해요!',
         'welcome_subtitle': '서울 서래마을을 걸으며 거리 표지판을 통해 프랑스 문화를 발견하세요.',
         'welcome_step1_title': '지도 탐색',
         'welcome_step1_desc': '인터랙티브 지도를 사용하여 동네에서 표지판을 찾으세요.',
