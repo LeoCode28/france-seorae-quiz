@@ -205,11 +205,11 @@
       .card { padding: 22px 16px; }
       h1 { font-size: 1.55rem; }
       header { padding: 8px 12px; }
-      .logo { gap: 8px; }
+      .logo { gap: 8px; flex-shrink: 1; min-width: 0; }
       .logo-img { height: 36px; }
       .tricolore { height: 22px; }
       .tricolore div { width: 7px; }
-      .logo-text { font-size: 0.95rem; }
+      .logo-text { font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; }
       .score-badge { padding: 4px 10px; font-size: 0.75rem; }
     }
     @media (max-width: 400px) {
