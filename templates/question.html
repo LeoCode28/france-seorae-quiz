@@ -28,7 +28,7 @@
     position: relative;
     min-height: 200px;
     max-height: 400px;
-    background: #F3F4F6;
+    background: var(--bg-surface);
     transition: transform 0.35s ease;
     display: flex;
     align-items: center;
@@ -110,7 +110,7 @@
     font-family: 'DM Sans', sans-serif;
   }
   .carousel-arrow.visible { display: flex; }
-  .carousel-arrow:hover { background: var(--bleu); color: white; }
+  .carousel-arrow:hover { background: var(--bleu); color: #FFFFFF; }
   .carousel-arrow--left  { left: 8px; }
   .carousel-arrow--right { right: 8px; }
 
@@ -134,7 +134,7 @@
   .carousel-dot {
     width: 8px; height: 8px;
     border-radius: 50%;
-    background: #D1D5DB;
+    background: var(--border-light);
     transition: background 0.2s, transform 0.2s;
     cursor: pointer;
     border: none;
@@ -163,7 +163,7 @@
 {% block content %}
 
 {% if deja_repondu %}
-<div class="alerte" style="background:#FEF9C3; border-color:#FDE047; color:#854D0E;">
+<div class="alerte-warning">
   {{ t('question_already') }}
 </div>
 <a href="/carte" class="btn btn-primary">{{ t('back_map') }}</a>
