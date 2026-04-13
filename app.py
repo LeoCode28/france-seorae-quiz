@@ -5,6 +5,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from collections import defaultdict
 import html, json, os, re
+import urllib.parse
 import urllib.request
 
 load_dotenv()
@@ -747,6 +748,40 @@ def set_lang(lang):
 # ═══════════════════════════════════════════════════════════
 #  ROUTES JOUEURS
 # ═══════════════════════════════════════════════════════════
+
+@app.template_global()
+def proxy_img(url):
+    """Build a proxied URL for a Google-hosted image."""
+    return '/media-proxy?url=' + urllib.parse.quote(url, safe='')
+
+
+@app.route('/media-proxy')
+def media_proxy():
+    """Proxy Google-hosted images to bypass referrer/CORS restrictions."""
+    url = request.args.get('url', '')
+    if not url or not url.startswith('https://'):
+        abort(404)
+    # Only allow known Google image hosts
+    host = urllib.parse.urlparse(url).hostname or ''
+    allowed = ('googleusercontent.com', 'google.com', 'ggpht.com',
+               'googleapis.com')
+    if not any(host.endswith(h) for h in allowed):
+        abort(403)
+    try:
+        req = urllib.request.Request(url, headers={
+            'User-Agent': 'Mozilla/5.0 (compatible; FranceSeorae/1.0)'
+        })
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = resp.read()
+            ctype = resp.headers.get('Content-Type', 'image/jpeg')
+        from flask import Response
+        return Response(data, content_type=ctype, headers={
+            'Cache-Control': 'public, max-age=86400',
+        })
+    except Exception as e:
+        print(f'[proxy] ❌ Failed: {url[:120]} — {e}')
+        abort(502)
+
 
 @app.route('/')
 def index():

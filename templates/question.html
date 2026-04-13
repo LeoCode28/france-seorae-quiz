@@ -218,7 +218,7 @@
 
       {% for img in media_images %}
       <div class="media-slide" data-type="image">
-        <img src="{{ img }}" alt="{{ q.rue }}" loading="lazy" referrerpolicy="no-referrer" />
+        <img src="{{ proxy_img(img) }}" alt="{{ q.rue }}" loading="lazy" />
         <div class="zoom-badge">🔍</div>
       </div>
       {% endfor %}
