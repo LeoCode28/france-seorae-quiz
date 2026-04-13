@@ -3,7 +3,7 @@
 
 {% block extra_head %}
 <style>
-  /* ── Media carousel with arrows ── */
+  /* ── Media carousel: one item at a time ── */
   .media-section { margin-top: 18px; }
   .media-section-title {
     font-size: 0.82rem;
@@ -14,63 +14,21 @@
     margin-bottom: 10px;
   }
 
-  .carousel-wrapper {
-    position: relative;
-    /* clip the arrows inside */
-  }
+  .carousel-wrapper { position: relative; }
 
   .carousel-track {
     display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    padding: 4px 0 12px;
-    /* hide scrollbar — arrows handle navigation */
-    scrollbar-width: none;
-  }
-  .carousel-track::-webkit-scrollbar { display: none; }
-
-  /* Arrow buttons */
-  .carousel-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 5;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255,255,255,0.92);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.22);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem;
-    color: var(--bleu);
-    font-weight: 700;
-    transition: background 0.15s, opacity 0.25s;
-    opacity: 0;
-    pointer-events: none;
-  }
-  .carousel-arrow.visible {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .carousel-arrow:hover { background: var(--bleu); color: white; }
-  .carousel-arrow--left  { left: 6px; }
-  .carousel-arrow--right { right: 6px; }
-
-  /* Slide — shared by video and image slides */
-  .media-slide {
-    flex: 0 0 280px;
-    scroll-snap-align: center;
-    position: relative;
-    border-radius: 12px;
     overflow: hidden;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.16);
+  }
+
+  .media-slide {
+    min-width: 100%;
+    position: relative;
     aspect-ratio: 16/9;
-    box-shadow: 0 2px 14px rgba(0,0,0,0.18);
     background: #000;
+    transition: transform 0.35s ease;
   }
   .media-slide img {
     width: 100%; height: 100%;
@@ -87,29 +45,33 @@
     transition: background 0.2s;
     cursor: pointer;
   }
-  .media-slide:hover .play-overlay { background: rgba(0,0,0,0.38); }
+  .media-slide:hover .play-overlay { background: rgba(0,0,0,0.36); }
   .play-btn {
-    width: 48px; height: 48px;
+    width: 56px; height: 56px;
     background: rgba(255,255,255,0.95);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+    box-shadow: 0 3px 16px rgba(0,0,0,0.35);
   }
   .play-btn::after {
     content: '';
     display: block;
     border-style: solid;
-    border-width: 9px 0 9px 14px;
+    border-width: 11px 0 11px 18px;
     border-color: transparent transparent transparent var(--bleu);
-    margin-left: 3px;
+    margin-left: 4px;
+  }
+  .media-slide iframe {
+    width: 100%; height: 100%;
+    border: 0; display: block;
   }
 
-  /* Image zoom icon overlay */
-  .zoom-overlay {
-    position: absolute; bottom: 8px; right: 8px;
-    background: rgba(255,255,255,0.85);
+  /* Image zoom badge */
+  .zoom-badge {
+    position: absolute; bottom: 10px; right: 10px;
+    background: rgba(255,255,255,0.88);
     border-radius: 8px;
-    padding: 4px 8px;
+    padding: 4px 9px;
     font-size: 0.72rem;
     font-weight: 600;
     color: var(--bleu);
@@ -117,10 +79,60 @@
     box-shadow: 0 1px 6px rgba(0,0,0,0.15);
   }
 
-  .media-slide iframe {
-    width: 100%; height: 100%;
-    border: 0;
-    display: block;
+  /* Arrow buttons */
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.92);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    cursor: pointer;
+    display: none;
+    align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    color: var(--bleu);
+    font-weight: 700;
+    transition: background 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .carousel-arrow.visible { display: flex; }
+  .carousel-arrow:hover { background: var(--bleu); color: white; }
+  .carousel-arrow--left  { left: 8px; }
+  .carousel-arrow--right { right: 8px; }
+
+  /* Counter badge */
+  .carousel-counter {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--gris);
+    letter-spacing: 0.04em;
+  }
+
+  /* Dot indicators */
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 10px;
+  }
+  .carousel-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #D1D5DB;
+    transition: background 0.2s, transform 0.2s;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+  }
+  .carousel-dot.active {
+    background: var(--bleu);
+    transform: scale(1.35);
   }
 
   /* Lightbox */
@@ -134,34 +146,6 @@
   .lightbox img {
     max-width: 95%; max-height: 90vh;
     border-radius: 12px; object-fit: contain;
-  }
-
-  /* Dot indicators */
-  .carousel-dots {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-top: 2px;
-  }
-  .carousel-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: #D1D5DB;
-    transition: background 0.2s, transform 0.2s;
-  }
-  .carousel-dot.active {
-    background: var(--bleu);
-    transform: scale(1.3);
-  }
-
-  /* ── Responsive ── */
-  @media (min-width: 600px) {
-    .media-slide { flex-basis: 320px; }
-    .carousel-arrow { width: 40px; height: 40px; font-size: 1.2rem; }
-  }
-  @media (max-width: 400px) {
-    .media-slide { flex-basis: 240px; }
-    .carousel-arrow { width: 30px; height: 30px; font-size: 0.9rem; }
   }
 </style>
 {% endblock %}
@@ -220,22 +204,22 @@
 <div class="media-section">
   <div class="media-section-title">{{ t('question_media') }}</div>
 
-  <div class="carousel-wrapper">
-    <button class="carousel-arrow carousel-arrow--left" aria-label="Previous" type="button">&#8249;</button>
-    <button class="carousel-arrow carousel-arrow--right" aria-label="Next" type="button">&#8250;</button>
+  <div class="carousel-wrapper" id="carouselWrap">
+    <button class="carousel-arrow carousel-arrow--left" id="arrowLeft" aria-label="Previous" type="button">&#8249;</button>
+    <button class="carousel-arrow carousel-arrow--right" id="arrowRight" aria-label="Next" type="button">&#8250;</button>
 
-    <div class="carousel-track" id="mediaTrack">
+    <div class="carousel-track" id="carouselTrack">
       {% for vid in media_videos %}
       <div class="media-slide" data-type="video" data-vid="{{ vid }}">
-        <img src="https://img.youtube.com/vi/{{ vid }}/hqdefault.jpg" alt="" loading="lazy" />
+        <img src="https://img.youtube.com/vi/{{ vid }}/hqdefault.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
         <div class="play-overlay"><div class="play-btn"></div></div>
       </div>
       {% endfor %}
 
       {% for img in media_images %}
       <div class="media-slide" data-type="image">
-        <img src="{{ img }}" alt="{{ q.rue }}" loading="lazy" />
-        <div class="zoom-overlay">🔍</div>
+        <img src="{{ img }}" alt="{{ q.rue }}" loading="lazy" referrerpolicy="no-referrer" />
+        <div class="zoom-badge">🔍</div>
       </div>
       {% endfor %}
     </div>
@@ -244,59 +228,76 @@
   </div>
 </div>
 
-<!-- Lightbox for images -->
+<!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <img id="lightbox-img" src="" alt="" />
 </div>
 
 <script>
 (function() {
-  var track  = document.getElementById('mediaTrack');
-  var dots   = document.getElementById('carouselDots');
-  var arrowL = track.parentElement.querySelector('.carousel-arrow--left');
-  var arrowR = track.parentElement.querySelector('.carousel-arrow--right');
-  var slides = track.querySelectorAll('.media-slide');
-  var total  = slides.length;
+  var track   = document.getElementById('carouselTrack');
+  var arrowL  = document.getElementById('arrowLeft');
+  var arrowR  = document.getElementById('arrowRight');
+  var dotsBox = document.getElementById('carouselDots');
+  var slides  = track.querySelectorAll('.media-slide');
+  var total   = slides.length;
+  var current = 0;
 
-  /* ── Build dot indicators ── */
+  /* Build dots */
   for (var i = 0; i < total; i++) {
-    var d = document.createElement('span');
+    var d = document.createElement('button');
     d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-    dots.appendChild(d);
+    d.setAttribute('aria-label', 'Slide ' + (i + 1));
+    d.setAttribute('type', 'button');
+    d.dataset.idx = i;
+    d.addEventListener('click', function() { goTo(parseInt(this.dataset.idx)); });
+    dotsBox.appendChild(d);
   }
-  var allDots = dots.querySelectorAll('.carousel-dot');
+  var allDots = dotsBox.querySelectorAll('.carousel-dot');
 
-  /* ── Arrow visibility ── */
-  function updateArrows() {
-    var scrollLeft = track.scrollLeft;
-    var maxScroll  = track.scrollWidth - track.clientWidth;
-    arrowL.classList.toggle('visible', scrollLeft > 10);
-    arrowR.classList.toggle('visible', scrollLeft < maxScroll - 10);
-
-    /* Update dot indicators */
-    if (total <= 1) return;
-    var slideW = slides[0].offsetWidth + 12; /* 12 = gap */
-    var idx = Math.round(scrollLeft / slideW);
-    idx = Math.max(0, Math.min(idx, total - 1));
+  function goTo(idx) {
+    if (idx < 0) idx = 0;
+    if (idx >= total) idx = total - 1;
+    current = idx;
+    slides.forEach(function(s, i) {
+      s.style.transform = 'translateX(' + (-current * 100) + '%)';
+    });
+    /* Update arrows */
+    arrowL.classList.toggle('visible', current > 0);
+    arrowR.classList.toggle('visible', current < total - 1);
+    /* Update dots */
     allDots.forEach(function(dot, j) {
-      dot.classList.toggle('active', j === idx);
+      dot.classList.toggle('active', j === current);
     });
   }
-  track.addEventListener('scroll', updateArrows);
-  /* Initial check after layout */
-  setTimeout(updateArrows, 100);
 
-  /* ── Arrow click ── */
-  function scrollBy(dir) {
-    var slideW = slides[0].offsetWidth + 12;
-    track.scrollBy({ left: dir * slideW, behavior: 'smooth' });
-  }
-  arrowL.addEventListener('click', function() { scrollBy(-1); });
-  arrowR.addEventListener('click', function() { scrollBy(1); });
+  /* Initial state */
+  goTo(0);
 
-  /* ── Slide click handlers ── */
+  arrowL.addEventListener('click', function() { goTo(current - 1); });
+  arrowR.addEventListener('click', function() { goTo(current + 1); });
+
+  /* Touch swipe support */
+  var startX = 0, startY = 0, dragging = false;
+  track.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    dragging = true;
+  }, { passive: true });
+  track.addEventListener('touchend', function(e) {
+    if (!dragging) return;
+    dragging = false;
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) goTo(current + 1);
+      else goTo(current - 1);
+    }
+  }, { passive: true });
+
+  /* Slide click handlers */
   slides.forEach(function(slide) {
-    slide.addEventListener('click', function() {
+    slide.addEventListener('click', function(e) {
       var type = slide.getAttribute('data-type');
       if (type === 'video') {
         var vid = slide.getAttribute('data-vid');
@@ -313,7 +314,6 @@
   });
 })();
 
-/* ── Lightbox ── */
 function openLightbox(src) {
   document.getElementById('lightbox-img').src = src;
   document.getElementById('lightbox').classList.add('open');
