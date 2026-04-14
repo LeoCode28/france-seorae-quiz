@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Admin – France Seorae Quiz</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
   <style>
+    :root { --adm-bg:#F8FAFC; --adm-card:#FFFFFF; --adm-text:#1a1a2e; --adm-muted:#6B7280; --adm-faint:#9CA3AF; --adm-border:#F1F5F9; --adm-stripe:#F8FAFC; --adm-header:#1e293b; --adm-shadow:rgba(0,0,0,0.07); }
+    [data-theme="dark"] { --adm-bg:#0F1020; --adm-card:#1a1a2e; --adm-text:#E5E7EB; --adm-muted:#9CA3AF; --adm-faint:#6B7280; --adm-border:#2a2a3e; --adm-stripe:#151528; --adm-header:#0D1533; --adm-shadow:rgba(0,0,0,0.3); }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'DM Sans', sans-serif; background: #F8FAFC; color: #1a1a2e; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--adm-bg); color: var(--adm-text); }
 
     header {
-      background: #1e293b; color: white;
+      background: var(--adm-header); color: white;
       padding: 16px 32px;
       display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
     }
@@ -34,13 +37,13 @@
       margin-bottom: 24px;
     }
     .stat-card {
-      background: white; border-radius: 14px; padding: 20px 22px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      background: var(--adm-card); border-radius: 14px; padding: 20px 22px;
+      box-shadow: 0 2px 12px var(--adm-shadow);
       border-left: 4px solid #002395;
     }
     .stat-card .num  { font-size: 2rem; font-weight: 700; color: #002395; }
-    .stat-card .lbl  { font-size: 0.82rem; color: #6B7280; margin-top: 3px; }
-    .stat-card .sub  { font-size: 0.75rem; color: #9CA3AF; margin-top: 2px; }
+    .stat-card .lbl  { font-size: 0.82rem; color: var(--adm-muted); margin-top: 3px; }
+    .stat-card .sub  { font-size: 0.75rem; color: var(--adm-faint); margin-top: 2px; }
 
     /* ── Barre d'actions ── */
     .actions-bar {
@@ -61,20 +64,24 @@
     .btn-export { background: #0F172A; color: white; }
 
     /* ── Table participants ── */
-    table { width: 100%; border-collapse: collapse; background: white;
-            border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    table { width: 100%; border-collapse: collapse; background: var(--adm-card);
+            border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px var(--adm-shadow); }
     thead { background: #002395; color: white; }
     th { padding: 14px 16px; text-align: left; font-size: 0.85rem; font-weight: 600; }
-    td { padding: 13px 16px; border-bottom: 1px solid #F1F5F9; font-size: 0.9rem; }
+    td { padding: 13px 16px; border-bottom: 1px solid var(--adm-border); font-size: 0.9rem; }
     tr:last-child td { border-bottom: none; }
-    tr:nth-child(even) td { background: #F8FAFC; }
+    tr:nth-child(even) td { background: var(--adm-stripe); }
 
     .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
     .badge-or  { background: #FEF3C7; color: #92400E; }
     .badge-ok  { background: #D1FAE5; color: #065F46; }
-    .badge-non { background: #F1F5F9; color: #6B7280; }
+    .badge-non { background: var(--adm-border); color: var(--adm-muted); }
 
-    .section-title { font-size: 1.1rem; font-weight: 700; color: #1e293b; margin-bottom: 14px; }
+    .section-title { font-size: 1.1rem; font-weight: 700; color: var(--adm-text); margin-bottom: 14px; }
+
+    /* ── Theme toggle ── */
+    .theme-toggle { background:none; border:1px solid rgba(255,255,255,0.3); color:white; padding:5px 10px; border-radius:8px; cursor:pointer; font-size:0.85rem; font-family:'DM Sans',sans-serif; transition:background 0.15s; }
+    .theme-toggle:hover { background:rgba(255,255,255,0.15); }
 
     @media(max-width:700px) {
       .stats-row { grid-template-columns: repeat(2, 1fr); }
@@ -94,6 +101,7 @@
     <a href="/admin/questions">Questions</a>
     <a href="/admin/logs">Statistiques</a>
     <a href="/admin/logout">Déconnexion</a>
+    <button class="theme-toggle" onclick="toggleAdminTheme()" id="adminThemeBtn">☀️</button>
   </nav>
 </header>
 
@@ -188,5 +196,9 @@
     </tbody>
   </table>
 </main>
+<script>
+function toggleAdminTheme(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);document.getElementById('adminThemeBtn').textContent=t==='dark'?'🌙':'☀️';}
+document.getElementById('adminThemeBtn').textContent=(localStorage.getItem('theme')||'light')==='dark'?'🌙':'☀️';
+</script>
 </body>
 </html>

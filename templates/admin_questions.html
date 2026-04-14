@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Gestion des questions – Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
   <style>
+    :root{--adm-bg:#F8FAFC;--adm-card:#FFFFFF;--adm-text:#1a1a2e;--adm-muted:#6B7280;--adm-faint:#9CA3AF;--adm-border:#F1F5F9;--adm-stripe:#F8FAFC;--adm-header:#1e293b;--adm-shadow:rgba(0,0,0,0.07);--adm-input-bg:#F8FAFC;--adm-input-border:#E5E7EB}
+    [data-theme="dark"]{--adm-bg:#0F1020;--adm-card:#1a1a2e;--adm-text:#E5E7EB;--adm-muted:#9CA3AF;--adm-faint:#6B7280;--adm-border:#2a2a3e;--adm-stripe:#151528;--adm-header:#0D1533;--adm-shadow:rgba(0,0,0,0.3);--adm-input-bg:#151528;--adm-input-border:#374151}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'DM Sans',sans-serif;background:#F8FAFC;color:#1a1a2e}
-    header{background:#1e293b;color:white;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    body{font-family:'DM Sans',sans-serif;background:var(--adm-bg);color:var(--adm-text)}
+    header{background:var(--adm-header);color:white;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     header h1{font-size:1.1rem}
     .nav-links{display:flex;gap:10px;flex-wrap:wrap}
     .nav-links a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.2)}
@@ -16,49 +19,49 @@
     .nav-links a.active{background:#002395;border-color:#002395;color:white}
     main{max-width:1100px;margin:28px auto;padding:0 20px}
     .top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px}
-    .top-bar h2{font-size:1.3rem;color:#1e293b}
+    .top-bar h2{font-size:1.3rem;color:var(--adm-text)}
     .btn-add{background:#002395;color:white;padding:10px 20px;border-radius:10px;text-decoration:none;font-weight:600;font-size:0.9rem}
     .btn-add:hover{background:#001a6e}
 
     /* ── Barre de recherche & filtres ── */
     .filter-bar{
       display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-      background:white;border-radius:14px;padding:14px 18px;
-      box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;
+      background:var(--adm-card);border-radius:14px;padding:14px 18px;
+      box-shadow:0 2px 12px var(--adm-shadow);margin-bottom:16px;
     }
     .search-wrap{flex:1;min-width:180px;position:relative;}
     .search-wrap input{
       width:100%;padding:9px 14px 9px 36px;
-      border:2px solid #E5E7EB;border-radius:10px;
+      border:2px solid var(--adm-input-border);border-radius:10px;
       font-size:0.92rem;font-family:'DM Sans',sans-serif;
-      background:#F8FAFC;transition:border-color 0.2s;
+      background:var(--adm-input-bg);transition:border-color 0.2s;color:var(--adm-text);
     }
-    .search-wrap input:focus{outline:none;border-color:#002395;background:white}
+    .search-wrap input:focus{outline:none;border-color:#002395;background:var(--adm-card)}
     .search-icon{
       position:absolute;left:10px;top:50%;transform:translateY(-50%);
-      color:#9CA3AF;font-size:1rem;pointer-events:none;
+      color:var(--adm-faint);font-size:1rem;pointer-events:none;
     }
     .filter-btns{display:flex;gap:6px;flex-wrap:wrap}
     .filter-btn{
       padding:7px 16px;border-radius:8px;font-size:0.82rem;font-weight:600;
-      cursor:pointer;border:2px solid #E5E7EB;background:white;
-      color:#6B7280;font-family:'DM Sans',sans-serif;transition:all 0.15s;
+      cursor:pointer;border:2px solid var(--adm-input-border);background:var(--adm-card);
+      color:var(--adm-muted);font-family:'DM Sans',sans-serif;transition:all 0.15s;
     }
     .filter-btn:hover{border-color:#002395;color:#002395}
     .filter-btn.active{background:#002395;color:white;border-color:#002395}
     .filter-btn.active-green{background:#065F46;color:white;border-color:#065F46}
     .filter-btn.active-amber{background:#92400E;color:white;border-color:#92400E}
-    .result-count{font-size:0.82rem;color:#9CA3AF;white-space:nowrap;margin-left:auto}
+    .result-count{font-size:0.82rem;color:var(--adm-faint);white-space:nowrap;margin-left:auto}
 
     .flash{padding:12px 18px;border-radius:10px;margin-bottom:18px;font-size:0.9rem;font-weight:600;background:#D1FAE5;color:#065F46;border:1px solid #86EFAC}
     .stats-mini{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
-    .stat-pill{background:white;border-radius:10px;padding:10px 18px;font-size:0.85rem;box-shadow:0 1px 6px rgba(0,0,0,0.07);display:flex;gap:8px;align-items:center}
+    .stat-pill{background:var(--adm-card);border-radius:10px;padding:10px 18px;font-size:0.85rem;box-shadow:0 1px 6px var(--adm-shadow);display:flex;gap:8px;align-items:center}
     .stat-pill strong{color:#002395;font-size:1.1rem}
 
-    table{width:100%;border-collapse:collapse;background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07)}
+    table{width:100%;border-collapse:collapse;background:var(--adm-card);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px var(--adm-shadow)}
     thead{background:#002395;color:white}
     th{padding:13px 14px;text-align:left;font-size:0.82rem;font-weight:600;white-space:nowrap}
-    td{padding:12px 14px;border-bottom:1px solid #F1F5F9;font-size:0.88rem;vertical-align:middle}
+    td{padding:12px 14px;border-bottom:1px solid var(--adm-border);font-size:0.88rem;vertical-align:middle}
     tr:last-child td{border-bottom:none}
     tr.en-pause td{background:#FFFBEB}
     tr.row-hidden{display:none}
@@ -77,12 +80,12 @@
     .btn-resume:hover{background:#34D399;color:white}
     .btn-delete{background:#FEE2E2;color:#DC2626}
     .btn-delete:hover{background:#DC2626;color:white}
-    .q-text{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#374151;display:block}
+    .q-text{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--adm-text);display:block}
     .reponse-ok{color:#065F46;font-weight:600;font-size:0.82rem}
 
     /* ── Empty state ── */
     .empty-state{
-      text-align:center;padding:40px 20px;color:#6B7280;font-size:0.9rem;
+      text-align:center;padding:40px 20px;color:var(--adm-muted);font-size:0.9rem;
       display:none;
     }
     .empty-state .icon{font-size:2.5rem;margin-bottom:8px;}
@@ -90,15 +93,18 @@
     /* ── Confirm modal ── */
     .confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center}
     .confirm-overlay.open{display:flex}
-    .confirm-box{background:white;border-radius:16px;padding:32px;max-width:380px;width:90%;text-align:center}
+    .confirm-box{background:var(--adm-card);border-radius:16px;padding:32px;max-width:380px;width:90%;text-align:center}
     .confirm-box h3{margin-bottom:10px;color:#DC2626}
-    .confirm-box p{color:#6B7280;font-size:0.9rem;margin-bottom:24px;line-height:1.5}
+    .confirm-box p{color:var(--adm-muted);font-size:0.9rem;margin-bottom:24px;line-height:1.5}
     .confirm-btns{display:flex;gap:10px;justify-content:center}
     .confirm-btns button,.confirm-btns .btn-ok{padding:10px 22px;border-radius:10px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;font-size:0.9rem}
-    .confirm-cancel{background:#F1F5F9;color:#374151}
+    .confirm-cancel{background:var(--adm-border);color:var(--adm-text)}
     .btn-ok{background:#DC2626;color:white}
 
     @media(max-width:700px){th:nth-child(4),td:nth-child(4){display:none}}
+    .theme-toggle{background:none;border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:0.85rem;font-family:'DM Sans',sans-serif;transition:background 0.15s}
+    .theme-toggle:hover{background:rgba(255,255,255,0.15)}
+    tr.en-pause td{background:var(--adm-stripe)}
   </style>
 </head>
 <body>
@@ -109,6 +115,7 @@
     <a href="/admin/questions" class="active">Questions</a>
     <a href="/admin/logs">Statistiques</a>
     <a href="/admin/logout">Déconnexion</a>
+    <button class="theme-toggle" onclick="toggleAdminTheme()" id="adminThemeBtn">☀️</button>
   </nav>
 </header>
 <main>
@@ -283,6 +290,10 @@
 
   // Initialisation du compteur
   applyFilters();
+
+  // Theme toggle
+  function toggleAdminTheme(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);document.getElementById('adminThemeBtn').textContent=t==='dark'?'🌙':'☀️';}
+  document.getElementById('adminThemeBtn').textContent=(localStorage.getItem('theme')||'light')==='dark'?'🌙':'☀️';
 </script>
 </body>
 </html>

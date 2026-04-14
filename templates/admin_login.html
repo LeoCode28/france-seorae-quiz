@@ -5,22 +5,28 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Admin – Connexion</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
   <style>
+    :root { --adm-bg:#F8FAFC; --adm-card:#FFFFFF; --adm-text:#1a1a2e; --adm-muted:#6B7280; --adm-border:#E5E7EB; --adm-shadow:rgba(0,0,0,0.08); }
+    [data-theme="dark"] { --adm-bg:#0F1020; --adm-card:#1a1a2e; --adm-text:#E5E7EB; --adm-muted:#9CA3AF; --adm-border:#374151; --adm-shadow:rgba(0,0,0,0.3); }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'DM Sans', sans-serif; background: #F8FAFC; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .box { background: white; border-radius: 16px; padding: 40px 36px; width: 100%; max-width: 380px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 5px solid #002395; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--adm-bg); display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .box { background: var(--adm-card); border-radius: 16px; padding: 40px 36px; width: 100%; max-width: 380px; box-shadow: 0 4px 24px var(--adm-shadow); border-top: 5px solid #002395; position: relative; }
     h1 { font-size: 1.4rem; color: #002395; margin-bottom: 8px; }
-    p { color: #6B7280; font-size: 0.9rem; margin-bottom: 24px; }
+    p { color: var(--adm-muted); font-size: 0.9rem; margin-bottom: 24px; }
     label { display: block; font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; color: #002395; margin-bottom: 8px; }
-    input { width: 100%; padding: 13px 16px; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 1rem; font-family: inherit; }
+    input { width: 100%; padding: 13px 16px; border: 2px solid var(--adm-border); border-radius: 10px; font-size: 1rem; font-family: inherit; background: var(--adm-bg); color: var(--adm-text); }
     input:focus { outline: none; border-color: #002395; }
-    button { width: 100%; margin-top: 16px; padding: 14px; background: #002395; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: inherit; }
-    button:hover { background: #001a6e; }
+    button[type="submit"] { width: 100%; margin-top: 16px; padding: 14px; background: #002395; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+    button[type="submit"]:hover { background: #001a6e; }
     .alerte { background: #FEF2F2; border: 2px solid #FECACA; color: #DC2626; padding: 10px 14px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 16px; }
+    [data-theme="dark"] .alerte { background: #2A0F0F; border-color: #7F1D1D; }
+    .theme-toggle-login { position:absolute; top:12px; right:12px; background:none; border:1px solid var(--adm-border); color:var(--adm-text); padding:4px 8px; border-radius:6px; cursor:pointer; font-size:0.85rem; }
   </style>
 </head>
 <body>
   <div class="box">
+    <button class="theme-toggle-login" onclick="toggleAdminTheme()" id="adminThemeBtn" type="button">☀️</button>
     <h1>🔒 Espace admin</h1>
     <p>France Seorae – Tableau de bord</p>
     {% if erreur %}<div class="alerte">{{ erreur }}</div>{% endif %}
@@ -30,5 +36,9 @@
       <button type="submit">Accéder au tableau de bord</button>
     </form>
   </div>
+<script>
+function toggleAdminTheme(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);document.getElementById('adminThemeBtn').textContent=t==='dark'?'🌙':'☀️';}
+document.getElementById('adminThemeBtn').textContent=(localStorage.getItem('theme')||'light')==='dark'?'🌙':'☀️';
+</script>
 </body>
 </html>

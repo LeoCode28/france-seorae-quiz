@@ -32,6 +32,7 @@ db = SQLAlchemy(app)
 TRANSLATIONS = {
     'fr': {
         'lang_name': 'Français', 'lang_flag': '🇫🇷',
+        'theme_section': 'Thème', 'lang_section': 'Langue',
         'score_pts': 'pts',
         'back_map': '← Retour à la carte',
         'map_title': '🗺️ Le quartier Seorae',
@@ -119,6 +120,7 @@ TRANSLATIONS = {
     },
     'en': {
         'lang_name': 'English', 'lang_flag': '🇬🇧',
+        'theme_section': 'Theme', 'lang_section': 'Language',
         'score_pts': 'pts',
         'back_map': '← Back to map',
         'map_title': '🗺️ Seorae Village',
@@ -206,6 +208,7 @@ TRANSLATIONS = {
     },
     'ko': {
         'lang_name': '한국어', 'lang_flag': '🇰🇷',
+        'theme_section': '테마', 'lang_section': '언어',
         'score_pts': '점',
         'back_map': '← 지도로 돌아가기',
         'map_title': '🗺️ 서래 마을',

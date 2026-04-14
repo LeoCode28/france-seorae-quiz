@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Statistiques – France Seorae Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
   <style>
+    :root{--adm-bg:#F8FAFC;--adm-card:#FFFFFF;--adm-text:#1a1a2e;--adm-muted:#6B7280;--adm-faint:#9CA3AF;--adm-border:#F1F5F9;--adm-stripe:#FAFBFC;--adm-header:#1e293b;--adm-shadow:rgba(0,0,0,0.07);--adm-bar-bg:#E5E7EB}
+    [data-theme="dark"]{--adm-bg:#0F1020;--adm-card:#1a1a2e;--adm-text:#E5E7EB;--adm-muted:#9CA3AF;--adm-faint:#6B7280;--adm-border:#2a2a3e;--adm-stripe:#151528;--adm-header:#0D1533;--adm-shadow:rgba(0,0,0,0.3);--adm-bar-bg:#374151}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'DM Sans',sans-serif;background:#F8FAFC;color:#1a1a2e}
+    body{font-family:'DM Sans',sans-serif;background:var(--adm-bg);color:var(--adm-text)}
 
-    header{background:#1e293b;color:white;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    header{background:var(--adm-header);color:white;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     header h1{font-size:1.1rem}
     .nav-links{display:flex;gap:10px;flex-wrap:wrap}
     .nav-links a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.2)}
@@ -20,10 +23,10 @@
 
     /* ── Cartes de stats ── */
     .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
-    .stat-card{background:white;border-radius:14px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.07);border-left:4px solid #4F46E5}
+    .stat-card{background:var(--adm-card);border-radius:14px;padding:20px;box-shadow:0 2px 12px var(--adm-shadow);border-left:4px solid #4F46E5}
     .stat-card .num{font-size:1.9rem;font-weight:700;color:#4F46E5;line-height:1.1}
-    .stat-card .lbl{font-size:0.8rem;color:#6B7280;margin-top:3px}
-    .stat-card .sub{font-size:0.73rem;color:#9CA3AF;margin-top:2px}
+    .stat-card .lbl{font-size:0.8rem;color:var(--adm-muted);margin-top:3px}
+    .stat-card .sub{font-size:0.73rem;color:var(--adm-faint);margin-top:2px}
 
     /* ── Section title ── */
     .section{margin-bottom:28px}
@@ -31,26 +34,26 @@
       display:flex;align-items:center;justify-content:space-between;
       margin-bottom:14px;flex-wrap:wrap;gap:8px;
     }
-    .section-title{font-size:1.05rem;font-weight:700;color:#1e293b}
-    .section-sub{font-size:0.82rem;color:#6B7280}
+    .section-title{font-size:1.05rem;font-weight:700;color:var(--adm-text)}
+    .section-sub{font-size:0.82rem;color:var(--adm-muted)}
 
     /* ── Tableaux ── */
-    .table-wrap{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07)}
+    .table-wrap{background:var(--adm-card);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px var(--adm-shadow)}
     table{width:100%;border-collapse:collapse}
-    thead{background:#1e293b;color:white}
+    thead{background:var(--adm-header);color:white}
     th{padding:12px 16px;text-align:left;font-size:0.8rem;font-weight:600;white-space:nowrap}
-    td{padding:11px 16px;border-bottom:1px solid #F1F5F9;font-size:0.86rem;vertical-align:middle}
+    td{padding:11px 16px;border-bottom:1px solid var(--adm-border);font-size:0.86rem;vertical-align:middle}
     tr:last-child td{border-bottom:none}
-    tr:nth-child(even) td{background:#FAFBFC}
+    tr:nth-child(even) td{background:var(--adm-stripe)}
 
     /* ── Barre de progression inline ── */
     .pct-wrap{display:flex;align-items:center;gap:10px}
-    .pct-bar{flex:1;height:7px;background:#E5E7EB;border-radius:999px;overflow:hidden;min-width:60px}
+    .pct-bar{flex:1;height:7px;background:var(--adm-bar-bg);border-radius:999px;overflow:hidden;min-width:60px}
     .pct-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#4F46E5,#7C3AED)}
     .pct-fill.danger{background:linear-gradient(90deg,#EF4444,#F97316)}
     .pct-fill.success{background:linear-gradient(90deg,#10B981,#059669)}
     .pct-num{font-weight:700;font-size:0.85rem;white-space:nowrap;min-width:36px;text-align:right}
-    .pct-na{color:#9CA3AF;font-size:0.82rem}
+    .pct-na{color:var(--adm-faint);font-size:0.82rem}
 
     .code-tag{font-family:monospace;background:#EEF1FF;color:#002395;padding:2px 8px;border-radius:6px;font-weight:700;font-size:0.85rem}
     .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:0.72rem;font-weight:700}
@@ -60,34 +63,34 @@
     .badge-err{background:#FEF2F2;color:#DC2626}
 
     /* ── Graphe journalier ── */
-    .chart-card{background:white;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.07)}
+    .chart-card{background:var(--adm-card);border-radius:14px;padding:24px;box-shadow:0 2px 12px var(--adm-shadow)}
     .chart-bars{display:flex;align-items:flex-end;gap:6px;height:100px;margin-top:12px}
     .bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:0}
     .bar{width:100%;background:linear-gradient(180deg,#4F46E5,#7C3AED);border-radius:4px 4px 0 0;min-height:3px;transition:opacity 0.15s}
     .bar:hover{opacity:0.75}
-    .bar-label{font-size:0.65rem;color:#6B7280;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:32px}
+    .bar-label{font-size:0.65rem;color:var(--adm-muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:32px}
     .bar-val{font-size:0.7rem;font-weight:700;color:#4F46E5}
-    .no-data{text-align:center;color:#9CA3AF;font-size:0.9rem;padding:32px 0}
+    .no-data{text-align:center;color:var(--adm-faint);font-size:0.9rem;padding:32px 0}
 
     /* ── Activité récente ── */
     .activity-list{list-style:none;display:flex;flex-direction:column;gap:0}
     .activity-item{
       display:flex;align-items:center;gap:12px;
-      padding:10px 16px;border-bottom:1px solid #F1F5F9;
+      padding:10px 16px;border-bottom:1px solid var(--adm-border);
       font-size:0.86rem;
     }
     .activity-item:last-child{border-bottom:none}
     .act-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0}
     .act-ok{background:#D1FAE5}
     .act-err{background:#FEF2F2}
-    .act-rue{font-weight:600;color:#1e293b;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .act-time{font-size:0.75rem;color:#9CA3AF;white-space:nowrap}
+    .act-rue{font-weight:600;color:var(--adm-text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .act-time{font-size:0.75rem;color:var(--adm-faint);white-space:nowrap}
 
     /* ── Tabs pour les tableaux questions ── */
-    .tabs{display:flex;gap:2px;margin-bottom:0;border-bottom:2px solid #E5E7EB}
+    .tabs{display:flex;gap:2px;margin-bottom:0;border-bottom:2px solid var(--adm-bar-bg)}
     .tab-btn{
       padding:8px 18px;border:none;background:none;font-family:'DM Sans',sans-serif;
-      font-size:0.86rem;font-weight:600;cursor:pointer;color:#6B7280;
+      font-size:0.86rem;font-weight:600;cursor:pointer;color:var(--adm-muted);
       border-bottom:2px solid transparent;margin-bottom:-2px;transition:color 0.15s;
     }
     .tab-btn.active{color:#4F46E5;border-bottom-color:#4F46E5}
@@ -104,6 +107,8 @@
     @media(max-width:560px){
       .stats-row{grid-template-columns:1fr 1fr}
     }
+    .theme-toggle{background:none;border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:0.85rem;font-family:'DM Sans',sans-serif;transition:background 0.15s}
+    .theme-toggle:hover{background:rgba(255,255,255,0.15)}
   </style>
 </head>
 <body>
@@ -115,6 +120,7 @@
     <a href="/admin/questions">Questions</a>
     <a href="/admin/logs" class="active">Statistiques</a>
     <a href="/admin/logout">Déconnexion</a>
+    <button class="theme-toggle" onclick="toggleAdminTheme()" id="adminThemeBtn">☀️</button>
   </nav>
 </header>
 
@@ -380,5 +386,9 @@
   }
 </script>
 
+<script>
+function toggleAdminTheme(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);document.getElementById('adminThemeBtn').textContent=t==='dark'?'🌙':'☀️';}
+document.getElementById('adminThemeBtn').textContent=(localStorage.getItem('theme')||'light')==='dark'?'🌙':'☀️';
+</script>
 </body>
 </html>

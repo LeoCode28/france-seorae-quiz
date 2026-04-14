@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>{{ 'Modifier' if mode == 'modifier' else 'Nouvelle' }} question – Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
   <style>
+    :root{--adm-bg:#F8FAFC;--adm-card:#FFFFFF;--adm-text:#1a1a2e;--adm-muted:#6B7280;--adm-faint:#9CA3AF;--adm-border:#E5E7EB;--adm-input-bg:#FAFAFA;--adm-header:#1e293b;--adm-shadow:rgba(0,0,0,0.08);--adm-section-bg:#F8FAFC}
+    [data-theme="dark"]{--adm-bg:#0F1020;--adm-card:#1a1a2e;--adm-text:#E5E7EB;--adm-muted:#9CA3AF;--adm-faint:#6B7280;--adm-border:#374151;--adm-input-bg:#151528;--adm-header:#0D1533;--adm-shadow:rgba(0,0,0,0.3);--adm-section-bg:#151528}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'DM Sans',sans-serif;background:#F8FAFC;color:#1a1a2e}
-    header{background:#1e293b;color:white;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    body{font-family:'DM Sans',sans-serif;background:var(--adm-bg);color:var(--adm-text)}
+    header{background:var(--adm-header);color:white;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     header h1{font-size:1.1rem}
     .nav-links{display:flex;gap:10px}
     .nav-links a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.2)}
@@ -16,9 +19,9 @@
     main{max-width:760px;margin:28px auto;padding:0 20px 60px}
 
     /* ── Card ── */
-    .card{background:white;border-radius:16px;padding:32px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border-top:5px solid #002395}
+    .card{background:var(--adm-card);border-radius:16px;padding:32px;box-shadow:0 2px 16px var(--adm-shadow);border-top:5px solid #002395}
     h2{font-size:1.35rem;color:#002395;margin-bottom:5px}
-    .sous-titre{color:#6B7280;font-size:0.9rem;margin-bottom:24px}
+    .sous-titre{color:var(--adm-muted);font-size:0.9rem;margin-bottom:24px}
 
     /* ── Erreurs ── */
     .erreurs{background:#FEF2F2;border:2px solid #FECACA;border-radius:10px;padding:14px 18px;margin-bottom:20px}
@@ -29,26 +32,26 @@
     .form-group{margin-bottom:16px}
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     label{display:block;font-weight:600;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;color:#002395;margin-bottom:6px}
-    label .hint{font-weight:400;text-transform:none;letter-spacing:0;color:#9CA3AF;font-size:0.79rem;margin-left:5px}
-    input[type=text],textarea{width:100%;padding:11px 13px;border:2px solid #E5E7EB;border-radius:10px;font-size:0.93rem;font-family:'DM Sans',sans-serif;background:#FAFAFA;transition:border-color 0.2s}
-    input:focus,textarea:focus{outline:none;border-color:#002395;background:white}
+    label .hint{font-weight:400;text-transform:none;letter-spacing:0;color:var(--adm-faint);font-size:0.79rem;margin-left:5px}
+    input[type=text],textarea{width:100%;padding:11px 13px;border:2px solid var(--adm-border);border-radius:10px;font-size:0.93rem;font-family:'DM Sans',sans-serif;background:var(--adm-input-bg);transition:border-color 0.2s;color:var(--adm-text)}
+    input:focus,textarea:focus{outline:none;border-color:#002395;background:var(--adm-card)}
     textarea{resize:vertical;min-height:76px;line-height:1.5}
     .reponse-input{border-color:#065F46 !important;background:#F0FDF4}
-    .section-sep{border:none;border-top:2px dashed #E5E7EB;margin:20px 0}
+    .section-sep{border:none;border-top:2px dashed var(--adm-border);margin:20px 0}
 
     /* ── Choix ── */
-    .choix-section{background:#F8FAFC;border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid #E5E7EB}
-    .choix-section h3{font-size:0.85rem;font-weight:700;color:#374151;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.04em}
+    .choix-section{background:var(--adm-section-bg);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid var(--adm-border)}
+    .choix-section h3{font-size:0.85rem;font-weight:700;color:var(--adm-text);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.04em}
     .choix-item{display:flex;align-items:center;gap:10px;margin-bottom:9px}
     .choix-item:last-child{margin-bottom:0}
     .choix-lettre{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.82rem;flex-shrink:0;color:white}
     .choix-item input{margin:0;flex:1}
 
     /* ── Lang tabs ── */
-    .lang-tabs{display:flex;gap:2px;border-bottom:2px solid #E5E7EB;margin-bottom:0}
+    .lang-tabs{display:flex;gap:2px;border-bottom:2px solid var(--adm-border);margin-bottom:0}
     .lang-tab-btn{
       padding:9px 20px;border:none;background:none;font-family:'DM Sans',sans-serif;
-      font-size:0.88rem;font-weight:600;cursor:pointer;color:#6B7280;
+      font-size:0.88rem;font-weight:600;cursor:pointer;color:var(--adm-muted);
       border-bottom:3px solid transparent;margin-bottom:-2px;transition:color 0.15s;
     }
     .lang-tab-btn.active{color:#002395;border-bottom-color:#002395}
@@ -57,17 +60,19 @@
     .lang-panel.active{display:block}
     .lang-panel-header{display:flex;align-items:center;gap:8px;margin-bottom:16px}
     .lang-badge{background:#EEF1FF;color:#002395;padding:3px 12px;border-radius:20px;font-size:0.8rem;font-weight:700}
-    .lang-optional{color:#9CA3AF;font-size:0.8rem}
+    .lang-optional{color:var(--adm-faint);font-size:0.8rem}
     .lang-required{color:#DC2626;font-size:0.8rem;font-weight:600}
 
     /* ── Buttons ── */
     .btn-row{display:flex;gap:12px;margin-top:24px}
     .btn-save{background:#002395;color:white;padding:13px 26px;border-radius:10px;font-size:0.97rem;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;flex:1}
     .btn-save:hover{background:#001a6e}
-    .btn-cancel{background:#F1F5F9;color:#374151;padding:13px 18px;border-radius:10px;font-size:0.97rem;font-weight:600;text-decoration:none;text-align:center;border:2px solid #E5E7EB}
-    .btn-cancel:hover{background:#E5E7EB}
+    .btn-cancel{background:var(--adm-section-bg);color:var(--adm-text);padding:13px 18px;border-radius:10px;font-size:0.97rem;font-weight:600;text-decoration:none;text-align:center;border:2px solid var(--adm-border)}
+    .btn-cancel:hover{background:var(--adm-border)}
 
     @media(max-width:520px){.form-row{grid-template-columns:1fr}}
+    .theme-toggle{background:none;border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:0.85rem;font-family:'DM Sans',sans-serif;transition:background 0.15s}
+    .theme-toggle:hover{background:rgba(255,255,255,0.15)}
   </style>
 </head>
 <body>
@@ -77,6 +82,7 @@
     <a href="/admin">Participants</a>
     <a href="/admin/questions">Questions</a>
     <a href="/admin/logout">Déconnexion</a>
+    <button class="theme-toggle" onclick="toggleAdminTheme()" id="adminThemeBtn" type="button">☀️</button>
   </nav>
 </header>
 <main>
@@ -272,6 +278,8 @@ function switchLang(lang, btn) {
   document.getElementById('panel-' + lang).classList.add('active');
   btn.classList.add('active');
 }
+function toggleAdminTheme(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);document.getElementById('adminThemeBtn').textContent=t==='dark'?'🌙':'☀️';}
+document.getElementById('adminThemeBtn').textContent=(localStorage.getItem('theme')||'light')==='dark'?'🌙':'☀️';
 </script>
 </body>
 </html>
