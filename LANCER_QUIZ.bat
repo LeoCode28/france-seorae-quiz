@@ -62,10 +62,10 @@ echo.
 :: Va dans le dossier du script
 cd /d "%~dp0"
 
-:: Verifie que app.py existe
-if not exist "app.py" (
-    echo  ERREUR : app.py introuvable dans ce dossier.
-    echo  Place LANCER_QUIZ.bat dans le meme dossier que app.py
+:: Verifie que run.py existe
+if not exist "run.py" (
+    echo  ERREUR : run.py introuvable dans ce dossier.
+    echo  Place LANCER_QUIZ.bat dans le meme dossier que run.py
     echo.
     pause
     exit /b
@@ -95,7 +95,7 @@ echo  Pour arreter : ferme cette fenetre ou Ctrl+C
 echo.
 
 :: Lance Flask
-%PYTHON_CMD% app.py
+%PYTHON_CMD% run.py
 
 echo.
 echo  Serveur arrete.

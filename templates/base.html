@@ -291,7 +291,7 @@
           <div class="menu-divider"></div>
           <div class="menu-section-label">{{ t('lang_section') }}</div>
           {% for lang_code in supported_langs %}
-          <a href="{{ url_for('set_lang', lang=lang_code, next=request.path) }}"
+          <a href="{{ url_for('main.set_lang', lang=lang_code, next=request.path) }}"
              class="menu-option {{ 'active' if current_lang == lang_code else '' }}">
             {{ translations[lang_code]['lang_flag'] }} {{ translations[lang_code]['lang_name'] }}
             {% if current_lang == lang_code %}<span class="check">✓</span>{% endif %}
